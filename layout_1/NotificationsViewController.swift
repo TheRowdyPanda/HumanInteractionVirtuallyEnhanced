@@ -104,7 +104,7 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
     {
         
         
-        println("DID SHOW CELL")
+        print("DID SHOW CELL")
         
         //var cell = UITableViewCell()
         
@@ -129,37 +129,37 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
 //        4 is following user
         if(type == "1"){
             action = "liked your comment"
-            cell.tag = (theJSON["results"]![indexPath.row]["c_id"] as! String!).toInt()!
+            cell.tag = Int((theJSON["results"]![indexPath.row]["c_id"] as! String!))!
             imTit = "Like.png"
         }
         if(type == "2"){
             action = "liked your reply"
-            cell.tag = (theJSON["results"]![indexPath.row]["c_id"] as! String!).toInt()!
+            cell.tag = Int((theJSON["results"]![indexPath.row]["c_id"] as! String!))!
             imTit = "Like.png"
         }
         if(type == "3"){
             action = "replied to your comment"
-            cell.tag = (theJSON["results"]![indexPath.row]["c_id"] as! String!).toInt()!
+            cell.tag = Int((theJSON["results"]![indexPath.row]["c_id"] as! String!))!
             imTit = "Comment.png"
         }
         if(type == "4"){
             action = "followed you"
-            cell.tag = (theJSON["results"]![indexPath.row]["u2Id"] as! String!).toInt()!
+            cell.tag = Int((theJSON["results"]![indexPath.row]["u2Id"] as! String!))!
             imTit = "Follow.png"
         }
         if(type == "5"){
             action = " wants to connect"
-            cell.tag = (theJSON["results"]![indexPath.row]["u2Id"] as! String!).toInt()!
+            cell.tag = Int((theJSON["results"]![indexPath.row]["u2Id"] as! String!))!
             imTit = "Follow.png"
         }
         if(type == "6"){
             action = " accepted your connection"
-            cell.tag = (theJSON["results"]![indexPath.row]["u2Id"] as! String!).toInt()!
+            cell.tag = Int((theJSON["results"]![indexPath.row]["u2Id"] as! String!))!
             imTit = "Follow.png"
         }
         if(type == "7"){
             action = " sent you a message"
-            cell.tag = (theJSON["results"]![indexPath.row]["u2Id"] as! String!).toInt()!
+            cell.tag = Int((theJSON["results"]![indexPath.row]["u2Id"] as! String!))!
             imTit = "chat_button.png"
         }
         
@@ -207,9 +207,9 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             // Download an NSData representation of the image at the URL
             let request: NSURLRequest = NSURLRequest(URL: imgURL)
-            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                 if error == nil {
-                    upimage = UIImage(data: data)
+                    upimage = UIImage(data: data!)
                     
                     // Store the image in to our cache
                     self.userImageCache[testUserImg] = upimage
@@ -220,7 +220,7 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     })
                 }
                 else {
-                    println("Error: \(error.localizedDescription)")
+                    print("Error: \(error!.localizedDescription)")
                 }
             })
             
@@ -294,23 +294,35 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
         var params = ["fbid":fbid, "gfbid":fbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
-            var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
+            var err: NSError? = nil
+            var json: NSDictionary? = nil
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             self.removeLoadingScreen()
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -366,7 +378,7 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
             let comView = mainStoryboard.instantiateViewControllerWithIdentifier("com_focus_scene_id") as! ThirdViewController
-            var myCustomViewController: ViewController = ViewController(nibName: nil, bundle: nil)
+            let myCustomViewController: ViewController = ViewController(nibName: nil, bundle: nil)
             
             let currentUserLocation = myCustomViewController.currentUserLocation
                 comView.sentLocation = currentUserLocation
@@ -387,7 +399,7 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
             let comView = mainStoryboard.instantiateViewControllerWithIdentifier("com_focus_scene_id") as! ThirdViewController
-            var myCustomViewController: ViewController = ViewController(nibName: nil, bundle: nil)
+            let myCustomViewController: ViewController = ViewController(nibName: nil, bundle: nil)
             
             let currentUserLocation = myCustomViewController.currentUserLocation
             comView.sentLocation = currentUserLocation
@@ -483,7 +495,7 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         
         
-        var label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
+        let label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
         label.textAlignment = NSTextAlignment.Center
         label.text = "Loading Comments..."
         //holdView.addSubview(label)
@@ -492,14 +504,14 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         
         // Returns an animated UIImage
-        var url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        let url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+        let imageData = NSData(contentsOfURL: url!)
         
         
         let image = UIImage.animatedImageWithData(imageData!)//UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
         
-        let smallerSquareSize = squareSize*0.6
+        _ = squareSize*0.6
         let gPos = (holdView.frame.width*0.2)/2
         let kPos = (holdView.frame.height*0.2)/2
         
@@ -512,12 +524,13 @@ class Notifications: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func removeLoadingScreen(){
         //self.loadingScreen.alpha = 0.0
-        
+        dispatch_async(dispatch_get_main_queue(),{
         for view in self.view.subviews {
             if(view.tag == 999){
                 view.removeFromSuperview()
             }
         }
+        })
     }
 
     

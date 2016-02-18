@@ -52,23 +52,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
   
     func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [NSObject : AnyObject]!) {
-        println("Complete invite without error")
+        print("Complete invite without error")
     }
     
     func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: NSError!) {
-        println("Error in invite \(error)")
+        print("Error in invite \(error)")
     }
 
     
     func inviteFBFriends(){
-        var inviteDialog:FBSDKAppInviteDialog = FBSDKAppInviteDialog()
+        let inviteDialog:FBSDKAppInviteDialog = FBSDKAppInviteDialog()
         
         if(inviteDialog.canShow()){
             let appLinkUrl2:NSURL = NSURL(string: "http://google.com")!
             ///let previewImageUrl:NSURL = NSURL(string: "http://mylink.com/image.png")!
             
           //  var inviteContent:FBSDKAppInviteContent = FBSDKAppInviteContent(appLinkURL: appLinkUrl2)
-            var inviteContent:FBSDKAppInviteContent = FBSDKAppInviteContent()
+            let inviteContent:FBSDKAppInviteContent = FBSDKAppInviteContent()
             inviteContent.appLinkURL = appLinkUrl2
            // inviteContent.appInvitePreviewImageURL = previewImageUrl
             
@@ -105,7 +105,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         savedFBID = defaults.stringForKey("saved_fb_id")!
         
         
-        println("Saved ID:\(savedFBID)")
+        print("Saved ID:\(savedFBID)")
         
         let font = UIFont(name: "Raleway-Light", size: 14)
         let attr = NSDictionary(objects: [font!, UIColor.whiteColor()], forKeys: [NSFontAttributeName, NSForegroundColorAttributeName])
@@ -116,10 +116,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let fontFamilyNames = UIFont.familyNames()
         for familyName in fontFamilyNames {
-            println("------------------------------")
-            println("Font Family Name = [\(familyName)]")
-            let names = UIFont.fontNamesForFamilyName(familyName as! String)
-            println("Font Names = [\(names)]")
+            print("------------------------------")
+            print("Font Family Name = [\(familyName)]")
+            let names = UIFont.fontNamesForFamilyName(familyName )
+            print("Font Names = [\(names)]")
         }
         
         
@@ -145,7 +145,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         
-        var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Main View Scene", action: "View Did Load", label: savedFBID, value: nil).build() as [NSObject : AnyObject])
         
         
@@ -195,7 +195,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func loadClusters(){
         
         
-        var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Main View Scene", action: "Load Clusters", label: savedFBID, value: nil).build() as [NSObject : AnyObject])
         
         
@@ -205,30 +205,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
      
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["fbid":savedFBID, "recentLocation":currentUserLocation] as Dictionary<String, String>
+        let params = ["fbid":savedFBID, "recentLocation":currentUserLocation] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
                 //                dispatch_async(dispatch_get_main_queue(),{
                 //
@@ -290,7 +304,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func loadComments(){
         
-        var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Main View Scene", action: "Load Comments", label: savedFBID, value: nil).build() as [NSObject : AnyObject])
         
         loadNewComments()
@@ -360,7 +374,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //3 islocation summary
         
         if(testType == "1"){
-            var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
+            let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
             
 //            
 //            cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -579,7 +593,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         else{
         //image
-        var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell") as! custom_cell
+        let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell") as! custom_cell
         
             
             cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -612,17 +626,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             let asdfasd = cell.comment_label?.text!
             
-            var gotURL = self.parseHTMLString(asdfasd!)
+            let gotURL = self.parseHTMLString(asdfasd!)
             
-            println("OH YEAH:\(gotURL)")
+            print("OH YEAH:\(gotURL)")
             
             if(gotURL.count == 0){
-                println("NO SHOW")
+                print("NO SHOW")
                 cell.urlLink = "none"
             }
             else{
-                println("LAST TIME BuDDY:\(gotURL.last)")
-                cell.urlLink = gotURL.last! as! String
+                print("LAST TIME BuDDY:\(gotURL.last)")
+                cell.urlLink = gotURL.last! as String
                 
                 let linkTap = UITapGestureRecognizer(target: self, action:Selector("clickComLink:"))
                 // 4
@@ -650,13 +664,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if( upimage == nil ) {
                 // If the image does not exist, we need to download it
                 
-                var imgURL: NSURL = NSURL(string: testUserImg)!
+                let imgURL: NSURL = NSURL(string: testUserImg)!
                 
                 // Download an NSData representation of the image at the URL
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                     if error == nil {
-                        upimage = UIImage(data: data)
+                        upimage = UIImage(data: data!)
                         
                         // Store the image in to our cache
                         self.userImageCache[testUserImg] = upimage
@@ -667,7 +681,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         })
                     }
                     else {
-                        println("Error: \(error.localizedDescription)")
+                        print("Error: \(error!.localizedDescription)")
                     }
                 })
                 
@@ -760,7 +774,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //
             
         //find out if the user has liked the comment or not
-        var hasLiked = voterCache[indexPath.row] as String!
+        let hasLiked = voterCache[indexPath.row] as String!
         
         if(hasLiked == "yes"){
             cell.heart_icon?.userInteractionEnabled = true
@@ -800,8 +814,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.comImage?.addGestureRecognizer(focusImage)
             
             //give a loading gif to UI
-            var urlgif = NSBundle.mainBundle().URLForResource("loader2", withExtension: "gif")
-            var imageDatagif = NSData(contentsOfURL: urlgif!)
+            let urlgif = NSBundle.mainBundle().URLForResource("loader2", withExtension: "gif")
+            let imageDatagif = NSData(contentsOfURL: urlgif!)
             
             
             let imagegif = UIImage.animatedImageWithData(imageDatagif!)
@@ -814,13 +828,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             var image = self.imageCache[testImage]
             if( image == nil ) {
                 // If the image does not exist, we need to download it
-                var imgURL: NSURL = NSURL(string: testImage)!
+                let imgURL: NSURL = NSURL(string: testImage)!
                 
                 // Download an NSData representation of the image at the URL
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                     if error == nil {
-                        image = UIImage(data: data)
+                        image = UIImage(data: data!)
                         
                         // Store the image in to our cache
                         self.imageCache[testImage] = image
@@ -831,7 +845,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         })
                     }
                     else {
-                        println("Error: \(error.localizedDescription)")
+                        print("Error: \(error!.localizedDescription)")
                     }
                 })
                 
@@ -856,7 +870,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         else{
             
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
+            let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
             
             
 //            cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -1017,7 +1031,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
                 // 2
-                var controller = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+                let controller = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
                 // 3
                 controller.setInitialText("Check out Hive!")
                 // 4
@@ -1025,7 +1039,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             else {
                 // 3
-                println("no Facebook account found on device")
+                print("no Facebook account found on device")
             }
         }
         
@@ -1042,13 +1056,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        var currentOffset = scrollView.contentOffset.y;
+        let currentOffset = scrollView.contentOffset.y;
         
-        var test = self.oldScrollPost - currentOffset
+        let test = self.oldScrollPost - currentOffset
         
-        println("SCROLL:\(currentOffset)")
-        println("SIZE:\(scrollView.contentSize.height)")
-        println("FRAME:\(scrollView.frame.height)")
+        print("SCROLL:\(currentOffset)")
+        print("SIZE:\(scrollView.contentSize.height)")
+        print("FRAME:\(scrollView.frame.height)")
         if(test >= 0 ){
             //  animateBarDown()
         }
@@ -1123,30 +1137,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_video_feed_7")
         
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["fbid":savedFBID, "recentLocation":currentUserLocation] as Dictionary<String, String>
+        let params = ["fbid":savedFBID, "recentLocation":currentUserLocation] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
 //                dispatch_async(dispatch_get_main_queue(),{
 //                    
@@ -1213,30 +1241,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_video_feed_8")
         
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["fbid":savedFBID, "recentLocation":currentUserLocation] as Dictionary<String, String>
+        let params = ["fbid":savedFBID, "recentLocation":currentUserLocation] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch{
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
                 //                dispatch_async(dispatch_get_main_queue(),{
                 //
@@ -1288,30 +1330,45 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         showLoadingScreen()
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_the_feed")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["fbid":savedFBID, "recentLocation":currentUserLocation] as Dictionary<String, String>
+        let params = ["fbid":savedFBID, "recentLocation":currentUserLocation] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
                 dispatch_async(dispatch_get_main_queue(),{
                     
@@ -1366,30 +1423,45 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         showLoadingScreen()
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_the_feed")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["fbid":savedFBID, "recentLocation":currentUserLocation, "radiusValue":String(radValue)] as Dictionary<String, String>
+        let params = ["fbid":savedFBID, "recentLocation":currentUserLocation, "radiusValue":String(radValue)] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch{
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
                 dispatch_async(dispatch_get_main_queue(),{
 
@@ -1537,7 +1609,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func showImageFullscreen(sender: UIGestureRecognizer){
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -1571,7 +1643,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func showLikers(sender: UIGestureRecognizer){
         
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -1613,7 +1685,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func showReplies(sender: UIGestureRecognizer){
         
-        println("SLKFJS:LDKFJ")
+        print("SLKFJS:LDKFJ")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -1690,7 +1762,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func shareComment(sender: UIGestureRecognizer){
 
         
-        println("DID PRESS SHARE")
+        print("DID PRESS SHARE")
         var sharedButton:AnyObject
 //        if(sender.view? == UIImageView()){
 //            
@@ -1782,13 +1854,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //var heartImage = sender.view? as UIImageView
         //get the main view
         
-        var indCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0))
+        let indCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0))
         
         if(indCell?.tag == 100){
             
-            var cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell_no_images
+            let cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell_no_images
             
-            var cID = cellView.comment_id
+            let cID = cellView.comment_id
             
             
             
@@ -1796,30 +1868,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_toggle_comment_vote")
             //START AJAX
-            var request = NSMutableURLRequest(URL: url!)
-            var session = NSURLSession.sharedSession()
+            let request = NSMutableURLRequest(URL: url!)
+            let session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
-            var params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
+            let params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch let error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
-            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                 
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1833,13 +1919,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                             
                             
                             
-                            var testVote = parseJSON["results"]![0]["vote"] as! String!
+                            let testVote = parseJSON["results"]![0]["vote"] as! String!
                             
                             if(testVote == "no"){
                                 cellView.heart_icon?.image = UIImage(named: "heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -1850,7 +1936,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                                 cellView.heart_icon.image = UIImage(named: "heart_full.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -1874,9 +1960,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if(indCell?.tag == 200){
             
-            var cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell
+            let cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell
             
-            var cID = cellView.comment_id
+            let cID = cellView.comment_id
             
             
             
@@ -1884,30 +1970,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_toggle_comment_vote")
             //START AJAX
-            var request = NSMutableURLRequest(URL: url!)
-            var session = NSURLSession.sharedSession()
+            let request = NSMutableURLRequest(URL: url!)
+            let session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
-            var params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
+            let params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch let error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
-            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
-                var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
+                var err: NSError? = nil
+                var json: NSDictionary? = nil
+                do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1921,13 +2021,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                             
                             
                             
-                            var testVote = parseJSON["results"]![0]["vote"] as! String!
+                            let testVote = parseJSON["results"]![0]["vote"] as! String!
                             
                             if(testVote == "no"){
                                 cellView.heart_icon?.image = UIImage(named: "heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -1938,7 +2038,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                                 cellView.heart_icon?.image = UIImage(named: "heart_full.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -2082,7 +2182,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         
-        var label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
+        let label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
         label.textAlignment = NSTextAlignment.Center
         label.text = "Loading Comments..."
         //holdView.addSubview(label)
@@ -2091,8 +2191,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         // Returns an animated UIImage
-        var url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        let url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+        let imageData = NSData(contentsOfURL: url!)
         
         
         let image = UIImage.animatedImageWithData(imageData!)//UIImage(named: imageName)
@@ -2146,18 +2246,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         
-        var label = UILabel(frame: CGRectMake(holdView.frame.width*0.1, -0.2*holdView.frame.height, holdView.frame.width*0.8, holdView.frame.height*0.8))
+        let label = UILabel(frame: CGRectMake(holdView.frame.width*0.1, -0.2*holdView.frame.height, holdView.frame.width*0.8, holdView.frame.height*0.8))
         label.textAlignment = NSTextAlignment.Center
         label.text = errorString as? String
         label.numberOfLines = 0
         holdView.addSubview(label)
         
         
-        let button   = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+        let button   = UIButton(type: UIButtonType.System)
         button.frame = CGRectMake(0, holdView.frame.height*0.6, holdView.frame.width, holdView.frame.height*0.2)
         //button.backgroundColor = UIColor.greenColor()
         button.setTitle("RETRY", forState: UIControlState.Normal)
-        let s = NSSelectorFromString(targetString as! String)
+        let s = NSSelectorFromString(targetString as String)
         let s2 = NSSelectorFromString("removeErrorScreen")
         button.addTarget(self, action:s, forControlEvents: UIControlEvents.TouchUpInside)
         button.addTarget(self, action:s2, forControlEvents: UIControlEvents.TouchUpInside)
@@ -2201,27 +2301,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //pragma mark - core location
     
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: { (placemarks, error) -> Void in
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        CLGeocoder().reverseGeocodeLocation(manager.location!, completionHandler: { (placemarks, error) -> Void in
             
             if (error != nil) {
-                println("Error:" + error.localizedDescription)
+                print("Error:" + error!.localizedDescription)
                 return
                 
             }
             
-            if placemarks.count > 0 {
-                let pm = placemarks[0] as! CLPlacemark
+            if placemarks!.count > 0 {
+                let pm = placemarks?[0]
                 //self.displayLocationInfo(pm)
                 
-                self.currentUserLocation = String("\(pm.location.coordinate.latitude), \(pm.location.coordinate.longitude)")
+                self.currentUserLocation = String("\(pm!.location!.coordinate.latitude), \(pm!.location!.coordinate.longitude)")
                 //print(pm.location.coordinate.latitude)
                 //print(pm.location.coordinate.longitude)
                 
-                println(self.currentUserLocation)
+                print(self.currentUserLocation)
                 
             }else {
-                println("Error with data")
+                print("Error with data")
                 
             }
             
@@ -2254,16 +2354,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func parseHTMLString(daString:NSString) -> [NSString]{
         
         
-        println("DA STRING:\(daString)")
-        let detector = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: nil)
+        print("DA STRING:\(daString)")
+        let detector = try? NSDataDetector(types: NSTextCheckingType.Link.rawValue)
         
         let fakejf = String(daString)
         //let length = fakejf.utf16Count
-        let length = count(fakejf.utf16)
-        let daString2 = daString as! String
+        let length = fakejf.utf16.count
+        let daString2 = daString as String
        // let links = detector?.matchesInString(daString, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as NSTextCheckingResult}
         
-        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as! NSTextCheckingResult}
+        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 }
         
 //        var d = daString as StringE
 //        if (d.containsString("Http://") == true){
@@ -2279,9 +2379,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }.map { link -> NSString in
                 //let urString = String(contentsOfURL: link.URL!)
                 let urString = link.URL!.absoluteString
-                println("DA STRING:\(urString)")
-                retString = urString!
-                return urString!
+                print("DA STRING:\(urString)")
+                retString = urString
+                return urString
         }
         
        // var newString = retString
@@ -2308,8 +2408,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -2320,28 +2420,41 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             sToke = dToke!
         }
         
-        println("DEVICE TOKEN:\(sToke)")
+        print("DEVICE TOKEN:\(sToke)")
        
-        var params = ["fbid":savedFBID, "token":sToke] as Dictionary<String, String>
+        let params = ["fbid":savedFBID, "token":sToke] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch{
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
-            var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
-            
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
+            var err: NSError? = nil
+            var json: NSDictionary? = nil
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
 
             }

@@ -149,15 +149,15 @@ class CommentLikersViewController: UIViewController, UITableViewDelegate, UITabl
         //println("S:LKDFJL:SKDFLSDK")
         let userInfo = notification.userInfo!
         
-        let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        _ = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
         let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        let convertedKeyboardEndFrame = view.convertRect(keyboardEndFrame, fromView: view.window)
+        _ = view.convertRect(keyboardEndFrame, fromView: view.window)
         let rawAnimationCurve = (notification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).unsignedIntValue << 16
         
         
         // let animationCurve = UIViewAnimationOptions.fromRaw(UInt(rawAnimationCurve))!
         
-        let animationCurve = UIViewAnimationOptions(UInt(rawAnimationCurve))
+        _ = UIViewAnimationOptions(rawValue: UInt(rawAnimationCurve))
         
       //  bottomLayoutConstraint.constant = 0 - CGRectGetMinY(convertedKeyboardEndFrame)/2 - replyHolderView.frame.height
         
@@ -189,12 +189,12 @@ class CommentLikersViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        println("DID SHOW CELL")
+        print("DID SHOW CELL")
 
-        var cell = tableView.dequeueReusableCellWithIdentifier("user_cell") as! user_cell
+        let cell = tableView.dequeueReusableCellWithIdentifier("user_cell") as! user_cell
         
         
-        var fbid = theJSON["results"]![indexPath.row]["userID"] as! String!
+        let fbid = theJSON["results"]![indexPath.row]["userID"] as! String!
         
         
         let url = NSURL(string: "http://graph.facebook.com/\(fbid)/picture?width=50&height=50")
@@ -270,23 +270,35 @@ class CommentLikersViewController: UIViewController, UITableViewDelegate, UITabl
         
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still

@@ -4,16 +4,19 @@
 //
 //  Created by Rijul Gupta on 7/20/15.
 //  Copyright (c) 2015 Rijul Gupta. All rights reserved.
-//
+
+//NEW
+//Main view of the app. Shows the people around you with similar interests and mutual friends. Also switches to show comments around you.
 
 import UIKit
 import CoreLocation
 import Social
 
-class PersonTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, CLLocationManagerDelegate {
+class PersonTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, CLLocationManagerDelegate, FBLoginViewDelegate {
     
     let locationManager = CLLocationManager()
     
+    var fbLoginView : FBLoginView!
     @IBOutlet var tableView: UITableView!
     
     var imageCache = [String : UIImage]()
@@ -45,8 +48,8 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         //self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         
-        //self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+        //self.locationManager.requestAlwaysAuthorization()
         
         self.locationManager.startUpdatingLocation()
         
@@ -55,10 +58,10 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         customSC.addTarget(self, action: "toggleComments:", forControlEvents: .ValueChanged)
         
         let font = UIFont(name: "Lato-Light", size: 15)
-        var attr = NSDictionary(objects: [font!, UIColor(red: (85.0/255.0), green: (85.0/255.0), blue: (85.0/255.0), alpha: 1.0)], forKeys: [NSFontAttributeName, NSForegroundColorAttributeName])
+        let attr = NSDictionary(objects: [font!, UIColor(red: (85.0/255.0), green: (85.0/255.0), blue: (85.0/255.0), alpha: 1.0)], forKeys: [NSFontAttributeName, NSForegroundColorAttributeName])
         // var attr = NSDictionary(object: UIFont(name: "HelveticaNeue-Bold", size: 16.0)!, forKey: NSFontAttributeName)
         
-        let attr2 = NSDictionary(objects: [font!, UIColor.blackColor()], forKeys: [NSFontAttributeName, NSForegroundColorAttributeName])
+       // _ = NSDictionary(objects: [font!, UIColor.blackColor()], forKeys: [NSFontAttributeName, NSForegroundColorAttributeName])
         
         
         //        customSC.setTitleTextAttributes(attr2 as [NSObject : AnyObject], forState: UIControlState.Normal)
@@ -83,7 +86,66 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.addSubview(refreshControl)
         
         // Do any additional setup after loading the view.
+        
+        
+        self.fbLoginView = FBLoginView()
+        self.fbLoginView.delegate = self
+        self.fbLoginView.readPermissions = ["public_profile", "email", "user_friends"]
+        
+//
+        if (!FBSession.activeSession().isOpen) {
+            // if the session is closed, then we open it here, and establish a handler for state changes
+            
+            FBSession.openActiveSessionWithReadPermissions(self.fbLoginView.readPermissions, allowLoginUI: true, completionHandler:  {(session: FBSession!, state: FBSessionState, error: NSError!) -> Void in
+                
+                if((error) != nil){
+                    //self.getFBFriends(next.substringFromIndex(27))
+                }
+                else{
+                    print("THE SESSION ERROR:\(error)")
+                }
+                }
+            )
+            
+        }
+        else{
+        }
+//
+//        
     }
+    
+    // Facebook Delegate Methods
+    
+    func loginViewShowingLoggedInUser(loginView : FBLoginView!) {
+        print("User Logged In")
+        print("This is where you perform a segue.")
+        
+
+    }
+    
+    func loginViewFetchedUserInfo(loginView : FBLoginView!, user: FBGraphUser){
+        print("User Name: \(user.name)")
+        print("Usr Edu: \(user.birthday)")
+        print(user)
+        let userID = user.objectForKey("id") as! String
+        print("user id: \(userID)")
+        
+
+    }
+    
+    func sessionStateChanged(session:FBSession, state:FBSessionState, error:NSError?) {
+        
+    }
+    
+    func loginViewShowingLoggedOutUser(loginView : FBLoginView!) {
+        print("User Logged Out")
+    }
+    
+    func loginView(loginView : FBLoginView!, handleError:NSError) {
+        print("Error: \(handleError.localizedDescription)")
+    }
+    
+
     
     
     func didPullRefresh(sender:AnyObject)
@@ -131,6 +193,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidAppear(animated: Bool) {
     }
     
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //make sure the json has loaded before we do anything
@@ -162,12 +225,27 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                 
                 
                 //set the cell contents with the ajax data
-                cell.name_label?.text = theJSON["results"]![indexPath.row]["userName"] as! String!
-                cell.comment_id = "22"//theJSON["results"]![indexPath.row]["c_id"] as! String!
-                let uid = theJSON["results"]![indexPath.row]["userID"] as! String!
-                cell.user_id = uid//theJSON["results"]![indexPath.row]["userID"] as! String!
-                cell.friends_label?.text = "MUTUAL FRIENDS: " + self.mutualFriendsCache[uid]! as String//(theJSON["results"]![indexPath.row]["friends"] as! String!)
-                cell.hashtags = theJSON["results"]![indexPath.row]["hashtags"] as! [(NSString)]
+                
+                if let name = theJSON["results"]![indexPath.row]["userName"] as! String! {
+                    cell.name_label?.text = name
+                }
+                if let uid = theJSON["results"]![indexPath.row]["userID"] as! String!{
+                    cell.user_id = uid
+                    
+                    if let friends = self.mutualFriendsCache[uid]! as String!{
+                        cell.friends_label?.text = "MUTUAL FRIENDS: \(friends)"
+                    }
+                    
+                }
+                if let hashtags = theJSON["results"]![indexPath.row]["hashtags"] as! [(NSString)]! {
+                    cell.hashtags = hashtags
+                }
+//                cell.name_label?.text = theJSON["results"]![indexPath.row]["userName"] as! String!
+//                cell.comment_id = "22"//theJSON["results"]![indexPath.row]["c_id"] as! String!
+//                let uid = theJSON["results"]![indexPath.row]["userID"] as! String!
+//                cell.user_id = uid//theJSON["results"]![indexPath.row]["userID"] as! String!
+//                cell.friends_label?.text = "MUTUAL FRIENDS: " + self.mutualFriendsCache[uid]! as String//(theJSON["results"]![indexPath.row]["friends"] as! String!)
+//                cell.hashtags = theJSON["results"]![indexPath.row]["hashtags"] as! [(NSString)]
                 var yPos = 0.0
                 
                 var status = "connect"
@@ -185,8 +263,8 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                 
                 if(status == "requester"){
                     cell.relationshipLabel?.text = "pending"
-                    var lGif = NSBundle.mainBundle().URLForResource("loading_spinner", withExtension: "gif")
-                    var imageDatagif = NSData(contentsOfURL: lGif!)
+                    let lGif = NSBundle.mainBundle().URLForResource("loading_spinner", withExtension: "gif")
+                    let imageDatagif = NSData(contentsOfURL: lGif!)
                     let image = UIImage.animatedImageWithData(imageDatagif!)
                     //cell.interactionButton?.imageView?.image = UIImage(data: imageDatagif!);
                     cell.interactionButton?.setImage(image, forState: UIControlState.Normal)
@@ -223,13 +301,13 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                 if( upimage == nil ) {
                     // If the image does not exist, we need to download it
                     
-                    var imgURL: NSURL = NSURL(string: testUserImg)!
+                    let imgURL: NSURL = NSURL(string: testUserImg)!
                     
                     // Download an NSData representation of the image at the URL
                     let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                         if error == nil {
-                            upimage = UIImage(data: data)
+                            upimage = UIImage(data: data!)
                             
                             // Store the image in to our cache
                             self.userImageCache[testUserImg] = upimage
@@ -240,7 +318,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                             })
                         }
                         else {
-                            println("Error: \(error.localizedDescription)")
+                            print("Error: \(error!.localizedDescription)")
                         }
                     })
                     
@@ -294,7 +372,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                     }
                     
                     var xpos = 0.0
-                    var widthSpacing = 5.0
+                    let widthSpacing = 5.0
                     if(cell.hashtagButtons.count > 0){
                         let holder = cell.hashtagButtons.last! as UIButton!
                         xpos = Double(holder.frame.origin.x) + Double(holder.frame.width) + widthSpacing;
@@ -303,14 +381,14 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                     cell.widthFiller += width + Int(widthSpacing)
                     
                     if(Double(cell.widthFiller) > Double(maxHashtagWidth)){
-                        println("THE CELL IS:\(indexPath.row)")
+                        print("THE CELL IS:\(indexPath.row)")
                         cell.widthFiller = width + Int(widthSpacing)
                         let addPos = (Double(height)*0.9)
                         yPos += addPos
                         xpos = 0.0
                     }
                  //   if(cell.hasLoadedInfo == false){
-                        var newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: Int(height)))
+                        let newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: Int(height)))
                         //newButton.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
                         newButton.backgroundColor = UIColor.clearColor()
                         
@@ -356,7 +434,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                 let testImage = theJSON["results"]![indexPath.row]["image"] as! String!
                 
                 if(testImage == "none"){
-                    var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
+                    let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
                     
                     
                     cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -373,17 +451,38 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                     
                     
                     //set the cell contents with the ajax data
-                    cell.comment_label?.text = theJSON["results"]![indexPath.row]["comments"] as! String!
-                    cell.comment_label.sizeToFit()
-                    cell.comment_id = theJSON["results"]![indexPath.row]["c_id"] as! String!
-                    cell.author_label?.text = theJSON["results"]![indexPath.row]["author"] as! String!
-                    //  cell.loc_label?.text = theJSON["results"]![indexPath.row]["location"] as! String!
-                    cell.heart_label?.text = voterValueCache[indexPath.row] as String!
-                    //cell.heart_label?.text = "12"
-                    cell.time_label?.text = theJSON["results"]![indexPath.row]["time"] as! String!
-                    cell.replyNumLabel?.text = theJSON["results"]![indexPath.row]["numComments"] as! String!
-                    
-                    cell.hashtags = theJSON["results"]![indexPath.row]["hashtagTitles"] as! [(NSString)]
+                    if let text = theJSON["results"]![indexPath.row]["comments"] as! String!{
+                        cell.comment_label?.text = text
+                    }
+                    if let cid = theJSON["results"]![indexPath.row]["c_id"] as! String! {
+                        cell.comment_id = cid
+                    }
+                    if let authorName = theJSON["results"]![indexPath.row]["author"] as! String! {
+                        cell.author_label?.text = authorName
+                    }
+                    if let h = voterValueCache[indexPath.row] as String! {
+                        cell.heart_label?.text = h
+                    }
+                    if let t = theJSON["results"]![indexPath.row]["time"] as! String! {
+                        cell.time_label?.text = t
+                    }
+                    if let rN = theJSON["results"]![indexPath.row]["numComments"] as! String! {
+                        cell.replyNumLabel?.text = rN
+                    }
+                    if let hashtags = theJSON["results"]![indexPath.row]["hashtagTitles"] as! [(NSString)]! {
+                        cell.hashtags = hashtags
+                    }
+//                    cell.comment_label?.text = theJSON["results"]![indexPath.row]["comments"] as! String!
+//                    cell.comment_label.sizeToFit()
+//                    cell.comment_id = theJSON["results"]![indexPath.row]["c_id"] as! String!
+//                    cell.author_label?.text = theJSON["results"]![indexPath.row]["author"] as! String!
+//                    //  cell.loc_label?.text = theJSON["results"]![indexPath.row]["location"] as! String!
+//                    cell.heart_label?.text = voterValueCache[indexPath.row] as String!
+//                    //cell.heart_label?.text = "12"
+//                    cell.time_label?.text = theJSON["results"]![indexPath.row]["time"] as! String!
+//                    cell.replyNumLabel?.text = theJSON["results"]![indexPath.row]["numComments"] as! String!
+//                    
+//                    cell.hashtags = theJSON["results"]![indexPath.row]["hashtagTitles"] as! [(NSString)]
                     var yPos = 0.0
                     
                     
@@ -476,15 +575,15 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                     
                     var gotURL = self.parseHTMLString(asdfasd!)
                     
-                    println("OH YEAH:\(gotURL)")
+                    print("OH YEAH:\(gotURL)")
                     
                     if(gotURL.count == 0){
-                        println("NO SHOW")
+                        print("NO SHOW")
                         cell.urlLink = "none"
                     }
                     else{
-                        println("LAST TIME BuDDY:\(gotURL.last)")
-                        cell.urlLink = gotURL.last! as! String
+                        print("LAST TIME BuDDY:\(gotURL.last)")
+                        cell.urlLink = gotURL.last! as String
                     }
                     
                     
@@ -509,9 +608,9 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                         
                         // Download an NSData representation of the image at the URL
                         let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                             if error == nil {
-                                upimage = UIImage(data: data)
+                                upimage = UIImage(data: data!)
                                 
                                 // Store the image in to our cache
                                 self.userImageCache[testUserImg] = upimage
@@ -522,7 +621,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                 })
                             }
                             else {
-                                println("Error: \(error.localizedDescription)")
+                                print("Error: \(error!.localizedDescription)")
                             }
                         })
                         
@@ -750,15 +849,15 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                     
                     var gotURL = self.parseHTMLString(asdfasd!)
                     
-                    println("OH YEAH:\(gotURL)")
+                    print("OH YEAH:\(gotURL)")
                     
                     if(gotURL.count == 0){
-                        println("NO SHOW")
+                        print("NO SHOW")
                         cell.urlLink = "none"
                     }
                     else{
-                        println("LAST TIME BuDDY:\(gotURL.last)")
-                        cell.urlLink = gotURL.last! as! String
+                        print("LAST TIME BuDDY:\(gotURL.last)")
+                        cell.urlLink = gotURL.last! as String
                     }
                     
                     
@@ -783,9 +882,9 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                         
                         // Download an NSData representation of the image at the URL
                         let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                             if error == nil {
-                                upimage = UIImage(data: data)
+                                upimage = UIImage(data: data!)
                                 
                                 // Store the image in to our cache
                                 self.userImageCache[testUserImg] = upimage
@@ -796,7 +895,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                 })
                             }
                             else {
-                                println("Error: \(error.localizedDescription)")
+                                print("Error: \(error!.localizedDescription)")
                             }
                         })
                         
@@ -946,9 +1045,9 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                         
                         // Download an NSData representation of the image at the URL
                         let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                             if error == nil {
-                                image = UIImage(data: data)
+                                image = UIImage(data: data!)
                                 
                                 // Store the image in to our cache
                                 self.imageCache[testImage] = image
@@ -959,7 +1058,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                 })
                             }
                             else {
-                                println("Error: \(error.localizedDescription)")
+                                print("Error: \(error!.localizedDescription)")
                             }
                         })
                         
@@ -999,7 +1098,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         let comView = mainStoryboard.instantiateViewControllerWithIdentifier("com_focus_scene_id") as! ThirdViewController
         //
         
-        println("DID RECIEVE CLICK")
+        print("DID RECIEVE CLICK")
         // let indCell = collectionView.cellForItemAtIndexPath(indexPath) as! profile_post_cellCollectionViewCell
         
         let indCell = tableView.cellForRowAtIndexPath(indexPath)
@@ -1059,15 +1158,15 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     func loadPeople(){
         
         dispatch_async(dispatch_get_main_queue(),{
-            println("DID START GETTING PEOPLE")
+            print("DID START GETTING PEOPLE")
             self.showLoadingScreen()
             let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_people")
             //START AJAX
             var request = NSMutableURLRequest(URL: url!)
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
-            println("BLACH BLACH")
-            println(self.currentUserLocation)
+            print("BLACH BLACH")
+            print(self.currentUserLocation)
             
             let defaults = NSUserDefaults.standardUserDefaults()
             let fbid = defaults.stringForKey("saved_fb_id") as String!
@@ -1075,24 +1174,39 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
             var params = ["gfbid":fbid, "recentLoc":self.currentUserLocation] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch var error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                fatalError()
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+                print("Response: \(response)")
+                var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+                
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 
                 self.removeLoadingScreen()
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1106,6 +1220,9 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                         self.theJSON = json
                         self.hasLoaded = true
                         self.numOfCells = parseJSON["results"]!.count
+                        
+                        self.typeOfCell = 1
+                        self.reload_table()
                         
                         for index in 0...(parseJSON["results"]!.count - 1){
                             let foo = parseJSON["results"]![index]["userID"] as! String
@@ -1121,8 +1238,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                         
                         
                     
-                        self.typeOfCell = 1
-                        self.reload_table()
+                       
                         
                         //                    let let doesNNH = parseJSON["results"]!["doesNeedNewHashtags"] as! Int
                         //
@@ -1148,7 +1264,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     func loadComments(){
         
-        println("DID START GETTING COMMENTS")
+        print("DID START GETTING COMMENTS")
         self.showLoadingScreen()
         // let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_following_comments")
         
@@ -1164,24 +1280,39 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         var params = ["gfbid":fbid, "recentLocation":currentUserLocation] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             self.removeLoadingScreen()
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1218,7 +1349,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func showImageFullscreen(sender: UIGestureRecognizer){
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -1234,7 +1365,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         let indCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: authorLabel.tag, inSection: 0))
         
         if(indCell?.tag == 100){
-            let gotCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: authorLabel.tag, inSection: 0)) as! custom_cell_no_images
+            _ = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: authorLabel.tag, inSection: 0)) as! custom_cell_no_images
             
         }
         if(indCell?.tag == 200){
@@ -1255,16 +1386,16 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     func parseHTMLString(daString:NSString) -> [NSString]{
         
         
-        println("DA STRING:\(daString)")
-        let detector = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: nil)
+        print("DA STRING:\(daString)")
+        let detector = try? NSDataDetector(types: NSTextCheckingType.Link.rawValue)
         
         let fakejf = String(daString)
         //let length = fakejf.utf16Count
-        let length = count(fakejf.utf16)
-        let daString2 = daString as! String
+        let length = fakejf.utf16.count
+        let daString2 = daString as String
         // let links = detector?.matchesInString(daString, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as NSTextCheckingResult}
         
-        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as! NSTextCheckingResult}
+        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 }
         
         //        var d = daString as StringE
         //        if (d.containsString("Http://") == true){
@@ -1280,9 +1411,9 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
             }.map { link -> NSString in
                 //let urString = String(contentsOfURL: link.URL!)
                 let urString = link.URL!.absoluteString
-                println("DA STRING:\(urString)")
-                retString = urString!
-                return urString!
+                print("DA STRING:\(urString)")
+                retString = urString
+                return urString
         }
         
         // var newString = retString
@@ -1325,24 +1456,63 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         
     }
     
-    
+    func startGettingFriends(timer:NSTimer!){
+        print("What is going on?")
+
+                    if(self.typeOfCell == 1){
+                        for index in 0...(self.theJSON["results"]!.count - 1){
+                            
+                            let foo = self.theJSON["results"]![index]["userID"] as! String
+                            self.getMutualFriends(foo, num:index)
+                        }
+                    }
+        
+    }
     func reload_table(){
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-            Int64(0.3 * Double(NSEC_PER_SEC)))
+            Int64(0.2 * Double(NSEC_PER_SEC)))
         
         let delayTime2 = dispatch_time(DISPATCH_TIME_NOW,
-            Int64(0.1 * Double(NSEC_PER_SEC)))
+            Int64(1.1 * Double(NSEC_PER_SEC)))
         
-        dispatch_after(delayTime2, dispatch_get_main_queue()) {
+//        dispatch_async(dispatch_get_main_queue()){
+//            
+//        NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: "startGettingFriends:", userInfo: nil, repeats: false)
+//        
+//            }
+        if(self.typeOfCell == 1){
             
-            if(self.typeOfCell == 1){
-                for index in 0...(self.theJSON["results"]!.count - 1){
-                    let foo = self.theJSON["results"]![index]["userID"] as! String
-                    self.getMutualFriends(foo, num:index)
-                }
-            }
         }
         
+//                    if(self.typeOfCell == 1){
+//                        for index in 0...(self.theJSON["results"]!.count - 1){
+//                            let foo = self.theJSON["results"]![index]["userID"] as! String
+//                            self.getMutualFriends(foo, num:index)
+//                        }
+//                    }
+//        FBSession.openActiveSessionWithReadPermissions(self.fbLoginView.readPermissions, allowLoginUI: true, completionHandler:  {(session: FBSession!, state: FBSessionState, error: NSError!) -> Void in
+//            
+//            if((error) != nil){
+//               // self.getFBFriends(next.substringFromIndex(27))
+//                dispatch_after(delayTime2, dispatch_get_main_queue()) {
+//                    
+//                    if(self.typeOfCell == 1){
+//                        for index in 0...(self.theJSON["results"]!.count - 1){
+//                            let foo = self.theJSON["results"]![index]["userID"] as! String
+//                            self.getMutualFriends(foo, num:index)
+//                        }
+//                    }
+//                }
+//            }
+//            else{
+//                print("THE SESSION ERROR:\(error)")
+//            }
+//            }
+//        )
+//        
+        
+        
+
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             
             if(self.typeOfCell == 1){
@@ -1440,7 +1610,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         
         
-        var label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
+        let label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
         label.textAlignment = NSTextAlignment.Center
         label.text = "Loading Comments..."
         //holdView.addSubview(label)
@@ -1449,14 +1619,14 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         
         // Returns an animated UIImage
-        var url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        let url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+        let imageData = NSData(contentsOfURL: url!)
         
         
         let image = UIImage.animatedImageWithData(imageData!)//UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
         
-        let smallerSquareSize = squareSize*0.6
+        _ = squareSize*0.6
         let gPos = (holdView.frame.width*0.2)/2
         let kPos = (holdView.frame.height*0.2)/2
         
@@ -1487,6 +1657,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         let algorithm: CCHmacAlgorithm = CCHmacAlgorithm(kCCHmacAlgSHA256)
         let digestLen: Int = Int(CC_SHA256_DIGEST_LENGTH)
         let str0 = FBSession.activeSession().accessTokenData.accessToken
+        //let str0 = FBSDKAccessToken.currentAccessToken().tokenString
         let key = "05e778848e1187897b834fba967cc0c9"
         let str = str0.cStringUsingEncoding(NSUTF8StringEncoding)
         let strLen = Int(str0.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
@@ -1498,7 +1669,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         CCHmac(algorithm, keyStr!, keyLen, str!, strLen, result)
         
         
-        var hash = NSMutableString()
+        let hash = NSMutableString()
         //hash.appendString("<")
         var counter = 0
         for i in 0..<digestLen {
@@ -1513,14 +1684,14 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         //  return String(hash)
         
         let digest = String(hash)// stringFromResult(result, length: digestLen)
-        println("THE HASH:\(digest)")
+        print("THE HASH:\(digest)")
         
         result.dealloc(digestLen)
         
         
         // println(FBSDKAccessToken.currentAccessToken().tokenString)
-        FBSession.openActiveSessionWithAllowLoginUI(true)
-        var params = ["fields":"context.fields(mutual_friends)", "access_token":FBSession.activeSession().accessTokenData.accessToken, "appsecret_proof":digest]
+        //FBSession.openActiveSessionWithAllowLoginUI(true)
+        let params = ["fields":"context.fields(mutual_friends)", "access_token":FBSession.activeSession().accessTokenData.accessToken, "appsecret_proof":digest]
         /* make the API call */
         
         //        var t2 = FBSDKGraphRequest(graphPath: "/dXNlcl9jb250ZAXh0OgGQgfRrBrfFMQrZC9POld0N9TnUSgeyL0560CZAXJt1p7Y4ZA3vXErNCgWaIZC7QZCh7ZCcSxbT3KjUxjjtfHg00C0jJ7lC9S4zkWsh8ZCLN9FEl1qG1sZD/all_mutual_friends", parameters: params, HTTPMethod: "GET")
@@ -1528,11 +1699,15 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         //            println("MUTUAL: \(result)")
         //            println(error)
         //        })
-        var first = FBSDKGraphRequest(graphPath: "/\(id)", parameters: params, HTTPMethod: "GET")
+        let first = FBSDKGraphRequest(graphPath: "/\(id)", parameters: params, HTTPMethod: "GET")
         first.startWithCompletionHandler({(connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
-            println("THE ID:\(id)")
-            println("MUTUAL: \(result)")
-            println(error)
+            print("THE ID:\(id)")
+            print("MUTUAL: \(result)")
+            
+            if let err = error {
+                print(err)
+            }
+            
             
             if((result) != nil){
                 if let valuec: AnyObject! = result["context"]{
@@ -1543,7 +1718,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                     if(vs != nil){
                                         if let vt: AnyObject! = vs["total_count"]{
                                             if(vt != nil){
-                                                print("NUMBER MUTUAL FRIENDS:\(vt.stringValue)")
+                                                print("NUMBER MUTUAL FRIENDS:\(vt.stringValue)", terminator: "")
                                                 self.mutualFriendsCache[id] = vt.stringValue
                                                 if let cellToUpdate = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: num, inSection: 0)) as? custom_cell_person {
                                                         cellToUpdate.friends_label?.text = "MUTUAL FRIENDS: \(vt.stringValue)"
@@ -1563,12 +1738,16 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                         dispatch_async(dispatch_get_main_queue(), {
                                             
                                             let contextid = vi as! String
-                                            print("CID:\(contextid)")
+                                            print("CID:\(contextid)", terminator: "")
                                             
-                                            var t2 = FBSDKGraphRequest(graphPath: "/\(contextid)/all_mutual_friends", parameters: params, HTTPMethod: "GET")
+                                            let t2 = FBSDKGraphRequest(graphPath: "/\(contextid)/all_mutual_friends", parameters: params, HTTPMethod: "GET")
                                             t2.startWithCompletionHandler({(connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
-                                                println("RESULT2: \(result)")
-                                                println(error)
+                                                print("RESULT2: \(result)")
+                                                
+                                                if let err = error {
+                                                    print(error)
+                                                }
+                                                
                                             })
                                             
                                         })
@@ -1597,11 +1776,14 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     func removeLoadingScreen(){
         //self.loadingScreen.alpha = 0.0
         
+        dispatch_async(dispatch_get_main_queue(),{
         for view in self.view.subviews {
             if(view.tag == 999){
                 view.removeFromSuperview()
             }
         }
+        })
+
     }
     
     
@@ -1610,17 +1792,17 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     func sendRequest(dabut: UIButton){
         
-        println("START START START")
-        var daCellIndex = dabut.tag
+        print("START START START")
+        let daCellIndex = dabut.tag
         self.userStatusCache[daCellIndex] = "requester"
-        var indexPath = NSIndexPath(forRow: daCellIndex, inSection: 0)
+        let indexPath = NSIndexPath(forRow: daCellIndex, inSection: 0)
         
-        var cell = self.tableView.cellForRowAtIndexPath(indexPath) as! custom_cell_person
+        let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! custom_cell_person
         
         let requestedid = cell.user_id
         cell.relationshipLabel?.text = "pending"
-        var lGif = NSBundle.mainBundle().URLForResource("loading_spinner", withExtension: "gif")
-        var imageDatagif = NSData(contentsOfURL: lGif!)
+        let lGif = NSBundle.mainBundle().URLForResource("loading_spinner", withExtension: "gif")
+        let imageDatagif = NSData(contentsOfURL: lGif!)
         
         let image = UIImage.animatedImageWithData(imageDatagif!)
         cell.interactionButton?.setImage(image, forState: UIControlState.Normal)
@@ -1633,27 +1815,41 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_user_request_friend")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
         let fbid = defaults.stringForKey("saved_fb_id") as String!
         
-        var params = ["gfbid":fbid, "rfbid": requestedid] as Dictionary<String, String>
+        let params = ["gfbid":fbid, "rfbid": requestedid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
@@ -1663,9 +1859,9 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                     cell.interactionButton?.setImage(image, forState: UIControlState.Normal)
                     cell.relationshipLabel?.text = "try again"
                     
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 });
                 //CHANGE THE IMAGE BACK TO CONNECT
                 
@@ -1695,15 +1891,15 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func message(dabut: UIButton){
-        var daCellIndex = dabut.tag
+        let daCellIndex = dabut.tag
         
         let status = userStatusCache[daCellIndex]!
         
-        println("THE CELL TAG:\(daCellIndex)")
+        print("THE CELL TAG:\(daCellIndex)")
         
-        println("THE CELL INFO:\(status)")
-        var indexPath = NSIndexPath(forRow: daCellIndex, inSection: 0)
-        var cell = self.tableView.cellForRowAtIndexPath(indexPath) as! custom_cell_person
+        print("THE CELL INFO:\(status)")
+        let indexPath = NSIndexPath(forRow: daCellIndex, inSection: 0)
+        let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! custom_cell_person
         let requestedid = cell.user_id
         let requestername = cell.name_label?.text
         
@@ -1751,23 +1947,37 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
             var params = ["gfbid":fbid, "rfbid": requestedid] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch var error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                fatalError()
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+                print("Response: \(response)")
+                var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                 
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                     
                     
                 }
@@ -1804,27 +2014,27 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
     //pragma mark - core location
     
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: { (placemarks, error) -> Void in
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        CLGeocoder().reverseGeocodeLocation(manager.location!, completionHandler: { (placemarks, error) -> Void in
             
             if (error != nil) {
-                println("Error:" + error.localizedDescription)
+                print("Error:" + error!.localizedDescription)
                 return
                 
             }
             
-            if placemarks.count > 0 {
-                let pm = placemarks[0] as! CLPlacemark
+            if placemarks!.count > 0 {
+                let pm = placemarks?[0]
                 //self.displayLocationInfo(pm)
                 
-                self.currentUserLocation = String("\(pm.location.coordinate.latitude), \(pm.location.coordinate.longitude)")
+                self.currentUserLocation = String("\(pm!.location!.coordinate.latitude), \(pm!.location!.coordinate.longitude)")
                 //print(pm.location.coordinate.latitude)
                 //print(pm.location.coordinate.longitude)
                 
-                println(self.currentUserLocation)
+                print(self.currentUserLocation)
                 
             }else {
-                println("Error with data")
+                print("Error with data")
                 
             }
             
@@ -1884,23 +2094,38 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
             var params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch var error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+                print("Response: \(response)")
+                var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+                
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1920,7 +2145,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                 cellView.heart_icon?.image = UIImage(named: "button_heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                var curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -1931,7 +2156,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                 cellView.heart_icon.image = UIImage(named: "button_heart.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                var curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -1972,23 +2197,37 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
             var params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch var error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+                print("Response: \(response)")
+                var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                 
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -2008,7 +2247,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                 cellView.heart_icon?.image = UIImage(named: "button_heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                var curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -2019,7 +2258,7 @@ class PersonTableViewController: UIViewController, UITableViewDelegate, UITableV
                                 cellView.heart_icon?.image = UIImage(named: "button_heart.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                var curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)

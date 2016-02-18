@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.rijulgupta.hive</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -28,17 +28,22 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>4</string>
 	<key>FacebookAppID</key>
 	<string>613995812038257</string>
 	<key>FacebookDisplayName</key>
 	<string>Hive</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Please...</string>
+	<string>Say yes, otherwise HIVE won't work.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please...</string>
+	<string>Say yes, otherwise HIVE won't work.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Light.ttf</string>

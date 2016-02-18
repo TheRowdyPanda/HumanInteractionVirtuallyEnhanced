@@ -5,6 +5,9 @@
 //  Created by Rijul Gupta on 7/19/15.
 //  Copyright (c) 2015 Rijul Gupta. All rights reserved.
 //
+//NEW
+//The first real screen you see. Lets you pick "hashtags" as interests. Can return to this screen upon request.
+
 
 import UIKit
 
@@ -75,18 +78,18 @@ class pickHashtagsInitialViewController: UIViewController, UIGestureRecognizerDe
 //        };
       //  FBSession.activeSession().accessTokenData.userID
         //FBSession.openActiveSessionWithAllowLoginUI(true)
-        print("TOKEN:\(FBSession.activeSession().accessTokenData.accessToken)")
+        print("TOKEN:\(FBSession.activeSession().accessTokenData.accessToken)", terminator: "")
        // println(FBSDKAccessToken.currentAccessToken().tokenString)
-        var params = ["fields":"context.fields(mutual_friends)", "access_token":FBSession.activeSession().accessTokenData.accessToken]
+        let params = ["fields":"context.fields(mutual_friends)", "access_token":FBSession.activeSession().accessTokenData.accessToken]
         /* make the API call */
         
         //dXNlcl9jb250ZAXh0OgGQgfRrBrfFMQrZC9POld0N9TnUSgeyL0560CZAXJt1p7Y4ZA3vXErNCgWaIZC7QZCh7ZCcSxbT3KjUxjjtfHg00C0jJ7lC9S4zkWsh8ZCLN9FEl1qG1sZD
         //var t = FBSDKGraphRequest(graphPath: "/100000118201399", parameters: params)
         //var t2 = FBSDKGraphRequest(graphPath: "/100000118201399", parameters: params, HTTPMethod: "GET")
-        var t2 = FBSDKGraphRequest(graphPath: "/dXNlcl9jb250ZAXh0OgGQgfRrBrfFMQrZC9POld0N9TnUSgeyL0560CZAXJt1p7Y4ZA3vXErNCgWaIZC7QZCh7ZCcSxbT3KjUxjjtfHg00C0jJ7lC9S4zkWsh8ZCLN9FEl1qG1sZD/all_mutual_friends", parameters: params, HTTPMethod: "GET")
+        let t2 = FBSDKGraphRequest(graphPath: "/dXNlcl9jb250ZAXh0OgGQgfRrBrfFMQrZC9POld0N9TnUSgeyL0560CZAXJt1p7Y4ZA3vXErNCgWaIZC7QZCh7ZCcSxbT3KjUxjjtfHg00C0jJ7lC9S4zkWsh8ZCLN9FEl1qG1sZD/all_mutual_friends", parameters: params, HTTPMethod: "GET")
         t2.startWithCompletionHandler({(connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
-            println("MUTUAL: \(result)")
-            println(error)
+            print("MUTUAL: \(result)")
+            print(error)
         })
         
     }
@@ -120,11 +123,11 @@ class pickHashtagsInitialViewController: UIViewController, UIGestureRecognizerDe
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-            var scrollViewHeight = scrollView.frame.size.height;
-            var scrollContentSizeHeight = scrollView.contentSize.height;
-            var scrollOffset = scrollView.contentOffset.y;
+            let scrollViewHeight = scrollView.frame.size.height;
+            let scrollContentSizeHeight = scrollView.contentSize.height;
+            let scrollOffset = scrollView.contentOffset.y;
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+        _ = dispatch_time(DISPATCH_TIME_NOW,
             Int64(0.5 * Double(NSEC_PER_SEC)))
         
         self.isScrolling = true
@@ -153,23 +156,35 @@ class pickHashtagsInitialViewController: UIViewController, UIGestureRecognizerDe
         var params = ["gfbid":fbid, "hashId":hashId] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
-            var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
+            var err: NSError? = nil
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -210,7 +225,6 @@ class pickHashtagsInitialViewController: UIViewController, UIGestureRecognizerDe
         }
         self.hasSelectedAHashtag = isOneHashtagTrue
         if(self.hasSelectedAHashtag == false){
-            println("IJOIJOIJ");
             let testContinue = self.view.viewWithTag(-100) as? UIButton
             if(testContinue == nil){
                 
@@ -252,7 +266,7 @@ class pickHashtagsInitialViewController: UIViewController, UIGestureRecognizerDe
     }
     func createHashtag(title: NSString, id:NSInteger){
         //let width = Int(title.length)*12
-        var title = title as String
+        let title = title as String
         if(self.hashtagIdIndex[title] != nil){//if we've already used this hashtag
             return
         }
@@ -261,7 +275,7 @@ class pickHashtagsInitialViewController: UIViewController, UIGestureRecognizerDe
         let width = Int(title.sizeWithAttributes([NSFontAttributeName: f!]).width) + 15
         let height = Int(title.sizeWithAttributes([NSFontAttributeName: UIFont.systemFontOfSize(24.0)]).height) + 15
         var xpos = 5.0
-        var widthSpacing = 12.0
+        let widthSpacing = 12.0
         if(hashtagButtons.count > 0){
             let holder = hashtagButtons.last! as UIButton!
             xpos = Double(holder.frame.origin.x) + Double(holder.frame.width) + widthSpacing;
@@ -272,9 +286,9 @@ class pickHashtagsInitialViewController: UIViewController, UIGestureRecognizerDe
         
         if(Int(testWidthFiller) > Int(self.view.frame.width - 22)){//self.hashtagScrollHolder.frame.width
             var onBut = self.hashtagButtons.count - 1
-            println("THE WIDTH:\(self.hashtagScrollHolder.frame.width)")
-            println("The WIDTH2:\(self.view.frame.width)")
-            println("ON THE BUTTON:\(onBut)")
+            print("THE WIDTH:\(self.hashtagScrollHolder.frame.width)")
+            print("The WIDTH2:\(self.view.frame.width)")
+            print("ON THE BUTTON:\(onBut)")
             if(onBut > (self.fakeHashtags.count - 1)){
                 onBut = self.fakeHashtags.count - 1
             }
@@ -298,7 +312,7 @@ class pickHashtagsInitialViewController: UIViewController, UIGestureRecognizerDe
             self.widthFiller = testWidthFiller
         }
  
-        var newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: height))
+        let newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: height))
         newButton.backgroundColor = UIColor(red: (255.0/255.0), green: (165.0/255.0), blue: (0.0/255.0), alpha: 1.0)
         
         newButton.setTitle(title as String, forState: UIControlState.Normal)
@@ -329,8 +343,8 @@ func pressed(dabut: UIButton){
             let startingY = dabut.frame.origin.y
             let wChanger = CGFloat(5.0)
             let hChanger = CGFloat(10.0)
-            let wChanger2 = CGFloat(3.0)
-            let hChanger2 = CGFloat(6.0)
+            _ = CGFloat(3.0)
+            _ = CGFloat(6.0)
             
             UIView.animateWithDuration(time1, delay: 0.0, options: .CurveEaseOut, animations: {
                 
@@ -440,7 +454,7 @@ func unpressed(dabut: UIButton){
         dabut.titleLabel?.font = UIFont(name: "Lato-Regular", size: 24.0)
         let hashtagID = self.hashtagIdIndex[dabut.titleLabel!.text!]
         let isSelected = self.hashtagSelectedIndex[hashtagID!]
-        println("Hashtag is false:\(isSelected)")
+        print("Hashtag is false:\(isSelected)")
         if(isSelected == false){
             self.hashtagSelectedIndex[hashtagID!] = true
             self.makeHashtagSelected(dabut)
@@ -508,8 +522,8 @@ func unpressed(dabut: UIButton){
         
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_hashtags")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -518,25 +532,40 @@ func unpressed(dabut: UIButton){
         var params = ["gfbid":fbid, "loc":"locatoin"] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
+        
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
-            var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
+            var err: NSError? = nil
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
+                dispatch_async(dispatch_get_main_queue(),{
                 self.showMessageWithError("Couldn't get hashtags", callback: "loadHashtags")
+                })
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -545,10 +574,8 @@ func unpressed(dabut: UIButton){
                 
                 // check and make sure that json has a value using optional binding.
                 if let parseJSON = json {
-                    
                     dispatch_async(dispatch_get_main_queue(),{
-                        // self.removeLoadingScreen()
-                    
+
                     self.descriptionLabel.text = "What do you like talking about?"
                     self.clearAllHashtags()
                     self.theJSON = json
@@ -577,6 +604,7 @@ func unpressed(dabut: UIButton){
                 }
             }
         })
+      
         task.resume()
         //END AJAX
         
@@ -586,33 +614,45 @@ func unpressed(dabut: UIButton){
         
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_hashtags_for_user")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
         let fbid = defaults.stringForKey("saved_fb_id") as String!
         
-        var params = ["gfbid":fbid] as Dictionary<String, String>
+        let params = ["gfbid":fbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
                 self.showMessageWithError("Couldn't get hashtags", callback: "loadHashtagsForUser")
                 
@@ -660,7 +700,7 @@ func unpressed(dabut: UIButton){
         
     }
     func showNextScreenButton(){
-        var nextButton = UIButton(frame: CGRect(x:0, y: self.view.frame.height, width: self.view.frame.width, height: 40))
+        let nextButton = UIButton(frame: CGRect(x:0, y: self.view.frame.height, width: self.view.frame.width, height: 40))
         nextButton.tag = -100;
         nextButton.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.8)
         
@@ -671,7 +711,7 @@ func unpressed(dabut: UIButton){
         
         let time1 = 0.1
 
-        let heightConstraint = NSLayoutConstraint(item: self.hashtagScrollHolder, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: nextButton, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
+        _ = NSLayoutConstraint(item: self.hashtagScrollHolder, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: nextButton, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
         
         UIView.animateWithDuration(time1, delay: 0.0, options: .CurveEaseOut, animations: {
             
@@ -695,17 +735,29 @@ func unpressed(dabut: UIButton){
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         let writeView = mainStoryboard.instantiateViewControllerWithIdentifier("write_comment_scene_id") as! WriteCommentViewController
+        let peopleView = mainStoryboard.instantiateViewControllerWithIdentifier("main_tab_bar_scene_id") as! UITabBarController
         
         writeView.commingFrom = "pickHashtags"
-        let writeView2 = mainStoryboard.instantiateViewControllerWithIdentifier("pick_hashtags_id") as! pickHashtagsInitialViewController
+        _ = mainStoryboard.instantiateViewControllerWithIdentifier("pick_hashtags_id") as! pickHashtagsInitialViewController
         
-        let presentingViewCont = self.presentingViewController
+        _ = self.presentingViewController
         let oldSelf = self
-        self.presentViewController(writeView, animated: true, completion: {
-            dispatch_after(0, dispatch_get_main_queue(), {
-                oldSelf.removeFromParentViewController()
-            })
+        
+        
+         let root = self.view.window?.rootViewController
+        self.view.window?.makeKeyAndVisible()
+        self.view.window?.makeKeyWindow()
+       // self.dismissViewControllerAnimated(false, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
+        root?.presentViewController(peopleView, animated: true, completion: {
+           // oldSelf.dismissViewControllerAnimated(true, completion: nil)
         })
+        
+//        self.presentViewController(writeView, animated: true, completion: {
+//            dispatch_after(0, dispatch_get_main_queue(), {
+//                oldSelf.removeFromParentViewController()
+//            })
+//        })
 
         
     }
@@ -732,18 +784,18 @@ func unpressed(dabut: UIButton){
     {
         
         
-        var alert = UIAlertController(title: "Error", message:message as String, preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Error", message:message as String, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Reload", style: .Default, handler: { action in
             switch action.style{
             case .Default:
                 NSThread.detachNewThreadSelector(Selector(callback as String), toTarget:self, withObject: nil)
-                println("default")
+                print("default")
                 
             case .Cancel:
-                println("cancel")
+                print("cancel")
                 
             case .Destructive:
-                println("destructive")
+                print("destructive")
             }
         }))
 //        alert.addAction(UIAlertAction(title: "Shit!", style: .Default, handler: { action in

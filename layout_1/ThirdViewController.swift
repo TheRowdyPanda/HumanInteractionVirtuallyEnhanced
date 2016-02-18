@@ -80,9 +80,9 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           
           tabBar.delegate = self
           
-          let firstItem = tabBar.items![0] as! UITabBarItem
+          let firstItem = tabBar.items![0] 
           firstItem.tag = 1
-          let secondItem = tabBar.items![1] as! UITabBarItem
+          let secondItem = tabBar.items![1] 
           secondItem.tag = 2
           
           
@@ -105,7 +105,7 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           
           
           
-          println(imgLink)
+          print(imgLink)
           //START AJAX
           
           if(authorFBID == savedFBID){
@@ -136,12 +136,12 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           
           
           if(self.focusTableOn == "likers"){
-               let secondItem = tabBar.items![1] as! UITabBarItem
+               let secondItem = tabBar.items![1] 
                tabBar.selectedItem = secondItem
                get_comment_likers()
           }
           else{
-               let firstItem = tabBar.items![0] as! UITabBarItem
+               let firstItem = tabBar.items![0] 
                tabBar.selectedItem = firstItem
                get_comment_replies()
                
@@ -177,7 +177,7 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           if(imgLink == "none2" || imgLink == "none" || imgLink == "None"){
                self.comImage.removeFromSuperview()
                
-               var fakeCon = NSLayoutConstraint(item: self.commentView,
+               let fakeCon = NSLayoutConstraint(item: self.commentView,
                     attribute: NSLayoutAttribute.Bottom,
                     relatedBy: NSLayoutRelation.Equal,
                     toItem: self.tabBar,
@@ -220,13 +220,13 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           }
           else{
                
-               println("THE WIDTH:\(self.view.frame.width)")
+               print("THE WIDTH:\(self.view.frame.width)")
                if(self.view.frame.width <= 320.0){
                     self.comWidthConstraint.constant = 250
                }
                //give a loading gif to UI
-               var urlgif = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-               var imageDatagif = NSData(contentsOfURL: urlgif!)
+               let urlgif = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+               let imageDatagif = NSData(contentsOfURL: urlgif!)
                
                
                let imagegif = UIImage.animatedImageWithData(imageDatagif!)
@@ -291,11 +291,11 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           
           
           
-          let animationCurve = UIViewAnimationOptions(UInt(rawAnimationCurve))
-          var keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+          let animationCurve = UIViewAnimationOptions(rawValue: UInt(rawAnimationCurve))
+          let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
           
           bottomLayoutConstraint.constant = -1*keyboardFrame.size.height + 1
-          UIView.animateWithDuration(animationDuration, delay: 0.0, options: .BeginFromCurrentState | animationCurve, animations: {
+          UIView.animateWithDuration(animationDuration, delay: 0.0, options: UIViewAnimationOptions.BeginFromCurrentState.union(animationCurve), animations: {
                self.view.layoutIfNeeded()
                }, completion: nil)
      }
@@ -326,10 +326,10 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
      {
           
           if(self.focusTableOn == "replies"){
-               var cell = tableView.dequeueReusableCellWithIdentifier("reply_cell") as! reply_cell
+               let cell = tableView.dequeueReusableCellWithIdentifier("reply_cell") as! reply_cell
                
                
-               var fbid = theJSON["results"]![indexPath.row]["user_id"] as! String!
+               let fbid = theJSON["results"]![indexPath.row]["user_id"] as! String!
                
                
                let url = NSURL(string: "http://graph.facebook.com/\(fbid)/picture?width=50&height=50")
@@ -346,10 +346,10 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
                return cell
           }
           else{
-               var cell = tableView.dequeueReusableCellWithIdentifier("user_cell") as! user_cell
+               let cell = tableView.dequeueReusableCellWithIdentifier("user_cell") as! user_cell
                
                
-               var fbid = theJSON["results"]![indexPath.row]["userID"] as! String!
+               let fbid = theJSON["results"]![indexPath.row]["userID"] as! String!
                
                
                let url = NSURL(string: "http://graph.facebook.com/\(fbid)/picture?width=50&height=50")
@@ -444,31 +444,43 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_comment_replies")
           //let url = NSURL(string: "http://www.groopie.co/mobile_get2_top_comments")
           //START AJAX
-          var request = NSMutableURLRequest(URL: url!)
-          var session = NSURLSession.sharedSession()
+          let request = NSMutableURLRequest(URL: url!)
+          let session = NSURLSession.sharedSession()
           request.HTTPMethod = "POST"
           
-          var params = ["fb_id":savedFBID, "latLon":sentLocation, "cID":commentID] as Dictionary<String, String>
+          let params = ["fb_id":savedFBID, "latLon":sentLocation, "cID":commentID] as Dictionary<String, String>
           
           
           var err: NSError?
-          request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+          do {
+           request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+          } catch let error as NSError {
+           err = error
+           request.HTTPBody = nil
+          }
           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
           request.addValue("application/json", forHTTPHeaderField: "Accept")
           
-          var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-               println("Response: \(response)")
-               var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-               println("Body: \(strData)")
+          let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+               print("Response: \(response)")
+               let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+               print("Body: \(strData)")
                var err: NSError?
-               var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                
+               var json: NSDictionary?
+               do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+               } catch let error as NSError{
+                    err = error
+               } catch {
+                    
+               }
                
                // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                }
                else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -499,31 +511,43 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_comment_likers")
           //let url = NSURL(string: "http://www.groopie.co/mobile_get2_top_comments")
           //START AJAX
-          var request = NSMutableURLRequest(URL: url!)
-          var session = NSURLSession.sharedSession()
+          let request = NSMutableURLRequest(URL: url!)
+          let session = NSURLSession.sharedSession()
           request.HTTPMethod = "POST"
           
-          var params = ["fb_id":savedFBID, "latLon":sentLocation, "cID":commentID] as Dictionary<String, String>
+          let params = ["fb_id":savedFBID, "latLon":sentLocation, "cID":commentID] as Dictionary<String, String>
           
           
           var err: NSError?
-          request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+          do {
+           request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+          } catch let error as NSError {
+           err = error
+           request.HTTPBody = nil
+          }
           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
           request.addValue("application/json", forHTTPHeaderField: "Accept")
           
-          var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-               println("Response: \(response)")
-               var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-               println("Body: \(strData)")
+          let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+               print("Response: \(response)")
+               let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+               print("Body: \(strData)")
                var err: NSError?
-               var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                
+               var json: NSDictionary?
+               do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+               } catch let error as NSError{
+                    err = error
+               } catch {
+                    
+               }
                
                // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                }
                else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -559,32 +583,44 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_user_delete_comment")
                     //let url = NSURL(string: "http://www.groopie.co/mobile_get2_top_comments")
                     //START AJAX
-                    var request = NSMutableURLRequest(URL: url!)
-                    var session = NSURLSession.sharedSession()
+                    let request = NSMutableURLRequest(URL: url!)
+                    let session = NSURLSession.sharedSession()
                     request.HTTPMethod = "POST"
           
                     let authorN = authorLabel.text! as String
-                    var params = ["c_id":commentID, "fbid":authorFBID,  "g_fbid":savedFBID] as Dictionary<String, String>
+                    let params = ["c_id":commentID, "fbid":authorFBID,  "g_fbid":savedFBID] as Dictionary<String, String>
           
           
                     var err: NSError?
-                    request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+                    do {
+                     request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+                    } catch let error as NSError {
+                     err = error
+                     request.HTTPBody = nil
+                    }
                     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
                     request.addValue("application/json", forHTTPHeaderField: "Accept")
           
-                    var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                         println("Response: \(response)")
-                         var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                         println("Body: \(strData)")
+                    let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                         print("Response: \(response)")
+                         let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                         print("Body: \(strData)")
                          var err: NSError?
-                         var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
-          
-          
+                         
+                         var json: NSDictionary?
+                         do{
+                              json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                         } catch let error as NSError{
+                              err = error
+                         } catch {
+                              
+                         }
+                         
                          // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                          if(err != nil) {
-                              println(err!.localizedDescription)
-                              let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                              println("Error could not parse JSON: '\(jsonStr)'")
+                              print(err!.localizedDescription)
+                              let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                              print("Error could not parse JSON: '\(jsonStr)'")
                          }
                          else {
                               // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -677,36 +713,48 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           if(isLoading == false){
                isLoading = true
                
-               println("Data is: \(self.replyCommentView.text)")
+               print("Data is: \(self.replyCommentView.text)")
                
                let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_reply_to_comment")
                //let url = NSURL(string: "http://www.groopie.co/mobile_get2_top_comments")
                //START AJAX
-               var request = NSMutableURLRequest(URL: url!)
-               var session = NSURLSession.sharedSession()
+               let request = NSMutableURLRequest(URL: url!)
+               let session = NSURLSession.sharedSession()
                request.HTTPMethod = "POST"
                
-               var params = ["rBody":self.replyCommentView.text, "fb_id":savedFBID, "latLon":sentLocation, "imgLink":imageLink, "cID":commentID] as Dictionary<String, String>
+               let params = ["rBody":self.replyCommentView.text!, "fb_id":savedFBID, "latLon":sentLocation, "imgLink":imageLink, "cID":commentID] as Dictionary<String, String>
                
                
                var err: NSError?
-               request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+               do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+               } catch let error as NSError {
+                err = error
+                request.HTTPBody = nil
+               }
                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
                request.addValue("application/json", forHTTPHeaderField: "Accept")
                
-               var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                    println("Response: \(response)")
-                    var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Body: \(strData)")
+               let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                    print("Response: \(response)")
+                    let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Body: \(strData)")
                     var err: NSError?
-                    var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                     
+                    var json: NSDictionary?
+                    do{
+                         json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                    } catch let error as NSError{
+                         err = error
+                    } catch {
+                         
+                    }
                     
                     // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                     if(err != nil) {
-                         println(err!.localizedDescription)
-                         let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                         println("Error could not parse JSON: '\(jsonStr)'")
+                         print(err!.localizedDescription)
+                         let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                         print("Error could not parse JSON: '\(jsonStr)'")
                     }
                     else {
                          // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -750,7 +798,7 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
                self.replyCommentView?.text = ""
                
                self.bottomLayoutConstraint.constant = 0.0
-               UIView.animateWithDuration(animationDuration, delay: 0.0, options:nil, animations: {
+               UIView.animateWithDuration(animationDuration, delay: 0.0, options:[], animations: {
                     self.view.layoutIfNeeded()
                     }, completion: nil)
                
@@ -764,27 +812,39 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
           
           let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_comment_info")
           //START AJAX
-          var request = NSMutableURLRequest(URL: url!)
-          var session = NSURLSession.sharedSession()
+          let request = NSMutableURLRequest(URL: url!)
+          let session = NSURLSession.sharedSession()
           request.HTTPMethod = "POST"
           
           let defaults = NSUserDefaults.standardUserDefaults()
           let fbid = defaults.stringForKey("saved_fb_id") as String!
           
-          var params = ["c_id":commentID] as Dictionary<String, String>
+          let params = ["c_id":commentID] as Dictionary<String, String>
           
           var err: NSError?
-          request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+          do {
+           request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+          } catch let error as NSError {
+           err = error
+           request.HTTPBody = nil
+          }
           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
           request.addValue("application/json", forHTTPHeaderField: "Accept")
           
-          var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-               println("Response: \(response)")
-               var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-               println("Body: \(strData)")
+          let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+               print("Response: \(response)")
+               let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+               print("Body: \(strData)")
                var err: NSError?
-               var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                
+               var json: NSDictionary?
+               do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+               } catch let error as NSError{
+                    err = error
+               } catch {
+                    
+               }
                
                
                //self.theJSON = NSJSONSerialization.JSONObjectWithData(json, options:.MutableLeaves, error: &err) as? NSDictionary
@@ -792,9 +852,9 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
                
                // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                     //  self.removeLoadingScreen()
                     
                }
@@ -864,7 +924,7 @@ class ThirdViewController: UIViewController, UITableViewDelegate, UITableViewDat
      
      
      
-     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
+     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
           if(item.tag == 1){
                //  println("PPSDJFOSDJF")
                get_comment_replies()

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cpe-ot-i8V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cpe-ot-i8V">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -397,9 +398,10 @@
                                 <color key="sectionIndexBackgroundColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell_no_images" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell_no_images" rowHeight="180" id="kt4-Ib-r6B" customClass="custom_cell_no_images" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="186" width="600" height="180"/>
+                                        <rect key="frame" x="0.0" y="22" width="600" height="180"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kt4-Ib-r6B" id="des-mJ-Vw5">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="kt4-Ib-r6B" id="des-mJ-Vw5">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="179.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qub-If-FkP">
@@ -435,7 +437,7 @@
                                                         <constraint firstAttribute="trailing" secondItem="yPG-Jr-AeO" secondAttribute="trailing" id="kqi-yH-58F"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wdy-V2-xtN">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wdy-V2-xtN">
                                                     <rect key="frame" x="13" y="-1" width="54" height="14"/>
                                                     <fontDescription key="fontDescription" name="Raleway-Light" family="Raleway" pointSize="15"/>
                                                     <color key="textColor" white="0.2491608796" alpha="1" colorSpace="calibratedWhite"/>
@@ -466,7 +468,7 @@
                                                         <constraint firstAttribute="width" secondItem="dHh-Cd-sg8" secondAttribute="height" multiplier="4:1" id="fZX-kZ-QxO"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HNt-S8-dLR">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HNt-S8-dLR">
                                                     <rect key="frame" x="20" y="8" width="35" height="35"/>
                                                     <color key="backgroundColor" red="0.33819000910000002" green="0.64669822079999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -474,14 +476,14 @@
                                                         <constraint firstAttribute="width" secondItem="HNt-S8-dLR" secondAttribute="height" multiplier="1:1" id="id4-G1-1Yc"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="j4D-Tw-7Aw">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="j4D-Tw-7Aw">
                                                     <rect key="frame" x="519" y="34" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="3Pf-qf-jVb"/>
                                                         <constraint firstAttribute="width" secondItem="j4D-Tw-7Aw" secondAttribute="height" multiplier="1:1" id="LNF-8X-PAO"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kPZ-Vr-i53">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kPZ-Vr-i53">
                                                     <rect key="frame" x="521" y="56" width="13" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="16"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -531,12 +533,13 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell" rowHeight="178" id="CT1-fq-Ab1" customClass="custom_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="187" width="600" height="178"/>
+                                        <rect key="frame" x="0.0" y="202" width="600" height="178"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CT1-fq-Ab1" id="FP2-yt-SHt">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="177.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRs-Vn-Dt7">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRs-Vn-Dt7">
                                                     <rect key="frame" x="292" y="14" width="15" height="15"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.64649884260000001" alpha="1" colorSpace="calibratedWhite"/>
@@ -550,39 +553,39 @@
                                                         <constraint firstAttribute="width" constant="35" id="nKM-7J-6mr"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="5M2-fE-gjW">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="5M2-fE-gjW">
                                                     <rect key="frame" x="524" y="17" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="5M2-fE-gjW" secondAttribute="height" multiplier="1:1" id="D5c-9b-EV2"/>
                                                         <constraint firstAttribute="width" constant="40" id="cCt-su-xPp"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0XT-C0-1RN">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0XT-C0-1RN">
                                                     <rect key="frame" x="69" y="157" width="45" height="14"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.35251736109999998" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Comment" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GI4-bU-C5C">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Comment" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GI4-bU-C5C">
                                                     <rect key="frame" x="69" y="46" width="499" height="21"/>
                                                     <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cm9-gd-gRr">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cm9-gd-gRr">
                                                     <rect key="frame" x="69" y="88" width="300" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="C0p-yH-gFR"/>
                                                         <constraint firstAttribute="width" secondItem="Cm9-gd-gRr" secondAttribute="height" multiplier="1:1" id="YVL-zI-vI2"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0QB-z8-WFz">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0QB-z8-WFz">
                                                     <rect key="frame" x="528" y="40" width="13" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="16"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="shareButton.png" translatesAutoresizingMaskIntoConstraints="NO" id="B9f-pC-JhF">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="shareButton.png" translatesAutoresizingMaskIntoConstraints="NO" id="B9f-pC-JhF">
                                                     <rect key="frame" x="278" y="149" width="40" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="PPL-rg-boj"/>
@@ -594,7 +597,7 @@
                                                     <color key="textColor" white="0.2491608796" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Replies" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x9F-Dj-AG1" userLabel="Comments">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Replies" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x9F-Dj-AG1" userLabel="Comments">
                                                     <rect key="frame" x="145" y="156" width="56" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.35251736109999998" alpha="1" colorSpace="calibratedWhite"/>
@@ -830,26 +833,16 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                             <constraint firstItem="FtT-Wj-reV" firstAttribute="centerX" secondItem="wzd-sE-Axw" secondAttribute="centerX" id="33G-2r-to9"/>
                             <constraint firstItem="6p5-dU-O6j" firstAttribute="height" secondItem="FRI-gA-h6h" secondAttribute="height" multiplier="0.2" id="4Tr-PR-kmn"/>
                             <constraint firstAttribute="centerX" secondItem="kIN-Ti-EiH" secondAttribute="centerX" id="Cz5-6v-KIN"/>
-                            <constraint firstItem="wzd-sE-Axw" firstAttribute="leading" secondItem="FtT-Wj-reV" secondAttribute="trailing" constant="2" id="N25-4V-KfW"/>
                             <constraint firstItem="6p5-dU-O6j" firstAttribute="width" secondItem="FRI-gA-h6h" secondAttribute="width" multiplier="0.8" id="PyO-wO-mXy"/>
                             <constraint firstAttribute="centerX" secondItem="FtT-Wj-reV" secondAttribute="centerX" id="QaT-aB-Vsh"/>
-                            <constraint firstItem="bX2-th-Lmf" firstAttribute="bottom" secondItem="6p5-dU-O6j" secondAttribute="bottom" constant="10" id="Ukc-5H-Jh3"/>
                             <constraint firstItem="FtT-Wj-reV" firstAttribute="top" secondItem="zIC-CO-nWp" secondAttribute="bottom" constant="5" id="ZaM-VQ-3cd"/>
                             <constraint firstItem="FtT-Wj-reV" firstAttribute="bottom" secondItem="wzd-sE-Axw" secondAttribute="top" constant="2" id="c7I-f0-QSw"/>
-                            <constraint firstItem="bX2-th-Lmf" firstAttribute="bottom" secondItem="6p5-dU-O6j" secondAttribute="bottom" constant="-75" id="hBk-H5-PC7"/>
-                            <constraint firstItem="FtT-Wj-reV" firstAttribute="leading" secondItem="FRI-gA-h6h" secondAttribute="leadingMargin" constant="20" id="jpJ-PQ-LsU"/>
+                            <constraint firstItem="bX2-th-Lmf" firstAttribute="top" secondItem="6p5-dU-O6j" secondAttribute="bottom" constant="-45" id="hBk-H5-PC7"/>
                             <constraint firstAttribute="centerX" secondItem="6p5-dU-O6j" secondAttribute="centerX" id="pUH-KX-sl4"/>
                             <constraint firstItem="kIN-Ti-EiH" firstAttribute="top" secondItem="zIC-CO-nWp" secondAttribute="top" constant="80" id="uNw-GR-G2w"/>
-                            <constraint firstItem="Rmd-uE-J3h" firstAttribute="top" secondItem="6p5-dU-O6j" secondAttribute="top" constant="-50" id="w5U-Gv-6jU"/>
+                            <constraint firstItem="Rmd-uE-J3h" firstAttribute="top" secondItem="6p5-dU-O6j" secondAttribute="top" constant="-45" id="w5U-Gv-6jU"/>
                             <constraint firstItem="Rmd-uE-J3h" firstAttribute="centerX" secondItem="6p5-dU-O6j" secondAttribute="centerX" id="zgb-kO-Dpg"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="jpJ-PQ-LsU"/>
-                                <exclude reference="N25-4V-KfW"/>
-                                <exclude reference="Ukc-5H-Jh3"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
                         <outlet property="fbLoginView" destination="6p5-dU-O6j" id="A4w-P9-5GZ"/>
@@ -926,7 +919,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
         <!--First View-->
         <scene sceneID="UYo-nD-dJr">
             <objects>
-                <viewController title="First View" id="cpe-ot-i8V" customClass="FirstSceneViewController" customModule="layout_1" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="first_view_scene_id" storyboardIdentifier="first_view_scene_id" title="First View" id="cpe-ot-i8V" customClass="FirstSceneViewController" customModule="layout_1" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iTj-b3-2kV"/>
                         <viewControllerLayoutGuide type="bottom" id="D0C-ia-7Y3"/>
@@ -934,35 +927,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                     <view key="view" contentMode="scaleToFill" id="uu8-Vb-aMQ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Zj-av-zgV">
-                                <rect key="frame" x="0.0" y="200" width="600" height="200"/>
-                                <color key="backgroundColor" red="0.094117647060000004" green="0.75294117650000003" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.094117647060000004" green="0.75294117650000003" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="loginScreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="w2H-ve-Qra">
-                                <rect key="frame" x="-1" y="1" width="600" height="600"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="w2H-ve-Qra" secondAttribute="height" multiplier="3:4" id="e0d-ua-Pxc"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="0.85098039219999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="w2H-ve-Qra" firstAttribute="leading" secondItem="uu8-Vb-aMQ" secondAttribute="leading" id="4pA-3Q-jmA"/>
-                            <constraint firstAttribute="trailing" secondItem="w2H-ve-Qra" secondAttribute="trailing" id="BeF-65-sNb"/>
-                            <constraint firstItem="w2H-ve-Qra" firstAttribute="top" secondItem="4Zj-av-zgV" secondAttribute="bottom" id="JQJ-bi-BHv"/>
-                            <constraint firstItem="4Zj-av-zgV" firstAttribute="leading" secondItem="uu8-Vb-aMQ" secondAttribute="leadingMargin" constant="-16" id="Jfu-47-hgw"/>
-                            <constraint firstItem="D0C-ia-7Y3" firstAttribute="top" secondItem="w2H-ve-Qra" secondAttribute="bottom" constant="80" id="LSF-rQ-Wkf"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="4Zj-av-zgV" secondAttribute="trailing" constant="-16" id="XSR-Fg-quy"/>
-                            <constraint firstItem="4Zj-av-zgV" firstAttribute="top" secondItem="iTj-b3-2kV" secondAttribute="bottom" constant="-20" id="bGO-zA-UKp"/>
-                            <constraint firstItem="w2H-ve-Qra" firstAttribute="top" secondItem="iTj-b3-2kV" secondAttribute="bottom" constant="20" id="fkx-HV-nTD"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="LSF-rQ-Wkf"/>
-                            </mask>
-                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uuo-m5-iYb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1005,16 +970,16 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back1.png" translatesAutoresizingMaskIntoConstraints="NO" id="rK6-Uc-gKd">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="back1.png" translatesAutoresizingMaskIntoConstraints="NO" id="rK6-Uc-gKd">
                                 <rect key="frame" x="0.0" y="20" width="600" height="1800"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back2.png" translatesAutoresizingMaskIntoConstraints="NO" id="BKJ-Qo-NJs">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="back2.png" translatesAutoresizingMaskIntoConstraints="NO" id="BKJ-Qo-NJs">
                                 <rect key="frame" x="0.0" y="20" width="600" height="1200"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wa7-Nc-7ED">
                                 <rect key="frame" x="180" y="236" width="240" height="128"/>
                             </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hak-5A-1U9">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hak-5A-1U9">
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                             </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="KARMA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QkM-fn-2sq">
@@ -1023,7 +988,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkk-MM-Gg5">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkk-MM-Gg5">
                                 <rect key="frame" x="554" y="20" width="30" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="X">
@@ -1140,7 +1105,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdE-8P-nhY">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdE-8P-nhY">
                                 <rect key="frame" x="-4" y="0.0" width="608" height="60"/>
                                 <color key="backgroundColor" red="1" green="0.82352941176470584" blue="0.043137254901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1155,9 +1120,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 <color key="tintColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell_no_images" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell_no_images" rowHeight="180" id="rDb-5w-iSO" customClass="custom_cell_no_images" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="186" width="600" height="180"/>
+                                        <rect key="frame" x="0.0" y="22" width="600" height="180"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rDb-5w-iSO" id="Nsy-S3-Wu8">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="179.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lfe-Ks-pXM">
@@ -1278,9 +1244,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell" rowHeight="178" id="IUZ-kg-Dcx" customClass="custom_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="187" width="600" height="178"/>
+                                        <rect key="frame" x="0.0" y="202" width="600" height="178"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IUZ-kg-Dcx" id="KlN-TC-pQJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="177.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kDM-fd-goa">
@@ -1292,7 +1259,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                             <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EF3-cg-erf">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EF3-cg-erf">
                                                             <rect key="frame" x="10" y="10" width="35" height="35"/>
                                                             <color key="backgroundColor" red="0.33819000910000002" green="0.64669822079999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
@@ -1477,7 +1444,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="profile_post_cell_id" id="o8y-h8-D5Z" customClass="profile_post_cellCollectionViewCell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="201" height="202"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="201" height="202"/>
@@ -1683,7 +1650,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="profile_post_cell_id" id="Rao-Aj-5Lc" customClass="profile_post_cellCollectionViewCell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="201" height="202"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="201" height="202"/>
@@ -1925,7 +1892,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W0D-Ii-u0Z">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W0D-Ii-u0Z">
                                 <rect key="frame" x="-4" y="0.0" width="608" height="60"/>
                                 <color key="backgroundColor" red="1" green="0.85098039215686272" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1940,16 +1907,17 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="VHC-WM-KvW">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="VHC-WM-KvW">
                                 <rect key="frame" x="0.0" y="60" width="600" height="540"/>
                                 <color key="backgroundColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="sectionIndexBackgroundColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="user_cell" selectionStyle="default" indentationWidth="23" reuseIdentifier="user_cell" id="f7Z-gt-yVS" customClass="user_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="12" y="278" width="575" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="f7Z-gt-yVS" id="oOe-2n-2GM">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="073-6S-atc">
@@ -2040,7 +2008,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bAy-t7-L5V">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bAy-t7-L5V">
                                 <rect key="frame" x="-4" y="0.0" width="608" height="620"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -2107,7 +2075,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="28U-Dl-S7k">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="28U-Dl-S7k">
                                 <rect key="frame" x="-4" y="0.0" width="608" height="60"/>
                                 <items>
                                     <navigationItem title="Title" id="yfe-f9-bhh">
@@ -2119,15 +2087,16 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="6O9-Pe-vKL">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="6O9-Pe-vKL">
                                 <rect key="frame" x="0.0" y="60" width="600" height="540"/>
                                 <color key="backgroundColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell_no_images" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell_no_images" rowHeight="180" id="pgN-ix-g0f" customClass="custom_cell_no_images" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="210" width="600" height="180"/>
+                                        <rect key="frame" x="0.0" y="22" width="600" height="180"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pgN-ix-g0f" id="bYv-Dy-zam">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="pgN-ix-g0f" id="bYv-Dy-zam">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="179.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rAD-lq-rIP">
@@ -2163,7 +2132,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstItem="9VI-s8-JGs" firstAttribute="top" secondItem="rAD-lq-rIP" secondAttribute="top" id="Psi-ky-3HG"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUK-VR-49I">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUK-VR-49I">
                                                     <rect key="frame" x="13" y="-1" width="54" height="14"/>
                                                     <fontDescription key="fontDescription" name="Raleway-Light" family="Raleway" pointSize="15"/>
                                                     <color key="textColor" white="0.2491608796" alpha="1" colorSpace="calibratedWhite"/>
@@ -2194,7 +2163,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstAttribute="width" constant="40" id="aA2-e5-NPP"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qLt-7Q-PK0">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qLt-7Q-PK0">
                                                     <rect key="frame" x="20" y="8" width="35" height="35"/>
                                                     <color key="backgroundColor" red="0.33819000910000002" green="0.64669822079999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -2202,14 +2171,14 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstAttribute="width" secondItem="qLt-7Q-PK0" secondAttribute="height" multiplier="1:1" id="ytH-65-9bl"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="BsD-Ht-2Yd">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="BsD-Ht-2Yd">
                                                     <rect key="frame" x="519" y="34" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="BsD-Ht-2Yd" secondAttribute="height" multiplier="1:1" id="JRs-ff-wFO"/>
                                                         <constraint firstAttribute="width" constant="40" id="izg-pI-PPO"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSp-Ar-Hha">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSp-Ar-Hha">
                                                     <rect key="frame" x="521" y="56" width="13" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="16"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2259,12 +2228,13 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell" rowHeight="178" id="fJu-RP-aO2" customClass="custom_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="211" width="600" height="178"/>
+                                        <rect key="frame" x="0.0" y="202" width="600" height="178"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fJu-RP-aO2" id="esK-F6-GVw">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="177.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvx-pB-hjB">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvx-pB-hjB">
                                                     <rect key="frame" x="292" y="14" width="15" height="15"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.64649884260000001" alpha="1" colorSpace="calibratedWhite"/>
@@ -2278,39 +2248,39 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstAttribute="width" secondItem="pES-D6-BrC" secondAttribute="height" multiplier="1:1" id="J6J-Ks-dtd"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="gyt-a5-aCm">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="gyt-a5-aCm">
                                                     <rect key="frame" x="524" y="17" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="gyt-a5-aCm" secondAttribute="height" multiplier="1:1" id="Hrv-wy-eIt"/>
                                                         <constraint firstAttribute="width" constant="40" id="s90-RA-guz"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rf3-cn-U7R">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rf3-cn-U7R">
                                                     <rect key="frame" x="69" y="157" width="45" height="14"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.35251736109999998" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Comment" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LwL-V9-zd0">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Comment" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LwL-V9-zd0">
                                                     <rect key="frame" x="69" y="46" width="499" height="21"/>
                                                     <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nia-15-ytr">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nia-15-ytr">
                                                     <rect key="frame" x="69" y="88" width="300" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="nia-15-ytr" secondAttribute="height" multiplier="1:1" id="e4A-eu-mxm"/>
                                                         <constraint firstAttribute="width" constant="200" id="vt6-U3-qQ0"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tcv-k3-7mA">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tcv-k3-7mA">
                                                     <rect key="frame" x="528" y="40" width="13" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="16"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="shareButton.png" translatesAutoresizingMaskIntoConstraints="NO" id="xKO-rU-q4P">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="shareButton.png" translatesAutoresizingMaskIntoConstraints="NO" id="xKO-rU-q4P">
                                                     <rect key="frame" x="278" y="149" width="40" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="NBS-gE-zwy"/>
@@ -2322,7 +2292,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                     <color key="textColor" white="0.2491608796" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Replies" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0M3-SJ-7Ll" userLabel="Comments">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Replies" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0M3-SJ-7Ll" userLabel="Comments">
                                                     <rect key="frame" x="145" y="156" width="56" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.35251736109999998" alpha="1" colorSpace="calibratedWhite"/>
@@ -2457,9 +2427,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="user_dm_cell_id" rowHeight="150" id="dKg-p5-kRL" customClass="user_dm_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="600" height="150"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dKg-p5-kRL" id="eIA-7g-E6J">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="149.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ovm-Vz-9IC">
@@ -2511,9 +2482,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="me_dm_cell_id" rowHeight="120" id="qc5-S3-B1c" customClass="me_dm_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="172" width="600" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qc5-S3-B1c" id="Zcx-CK-xbR">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="119.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JMe-TA-Zww">
@@ -2616,7 +2588,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y3b-ra-Eq6">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y3b-ra-Eq6">
                                 <rect key="frame" x="-4" y="0.0" width="608" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="3Pc-8n-8IY"/>
@@ -2638,10 +2610,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5yU-V5-JrF">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5yU-V5-JrF">
                                 <rect key="frame" x="-4" y="558" width="608" height="42"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Reply" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jJf-tS-e4W">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Reply" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jJf-tS-e4W">
                                         <rect key="frame" x="10" y="6" width="426" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -2746,12 +2718,13 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                         </constraints>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="reply_cell" selectionStyle="default" indentationWidth="23" reuseIdentifier="reply_cell" id="hCG-y1-YkM" customClass="reply_cell" customModule="layout_1" customModuleProvider="target">
-                                                <rect key="frame" x="12" y="228" width="575" height="44"/>
+                                                <rect key="frame" x="0.0" y="22" width="575" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hCG-y1-YkM" id="fya-KX-Lgm">
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="hCG-y1-YkM" id="fya-KX-Lgm">
+                                                    <rect key="frame" x="0.0" y="0.0" width="575" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eBA-AD-MvU">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eBA-AD-MvU">
                                                             <rect key="frame" x="13" y="13" width="3" height="3"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
@@ -2796,9 +2769,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="user_cell" selectionStyle="default" indentationWidth="23" reuseIdentifier="user_cell" id="lrm-N1-DDq" customClass="user_cell" customModule="layout_1" customModuleProvider="target">
-                                                <rect key="frame" x="12" y="228" width="575" height="44"/>
+                                                <rect key="frame" x="0.0" y="66" width="575" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lrm-N1-DDq" id="doh-NR-j2f">
+                                                    <rect key="frame" x="0.0" y="0.0" width="575" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kt5-Lu-Fbk">
@@ -2976,7 +2950,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sRY-Zj-Q8z">
                                 <rect key="frame" x="0.0" y="276" width="600" height="48"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Reply" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DOu-CO-Wc0">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Reply" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DOu-CO-Wc0">
                                         <rect key="frame" x="10" y="6" width="420" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -3004,7 +2978,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                     <constraint firstAttribute="trailing" secondItem="0oC-EO-DXu" secondAttribute="trailing" constant="20" id="ZdF-Gd-MZX"/>
                                 </constraints>
                             </view>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JiQ-kw-aH3">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JiQ-kw-aH3">
                                 <rect key="frame" x="-4" y="0.0" width="608" height="60"/>
                                 <color key="backgroundColor" red="1" green="0.85098039215686272" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -3030,12 +3004,13 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 <color key="tintColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="reply_cell" selectionStyle="default" indentationWidth="23" reuseIdentifier="reply_cell" id="Hnh-E6-nIS" customClass="reply_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="12" y="278" width="575" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="575" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Hnh-E6-nIS" id="sK0-lI-lZr">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="Hnh-E6-nIS" id="sK0-lI-lZr">
+                                            <rect key="frame" x="0.0" y="0.0" width="575" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PL2-x8-fGk">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PL2-x8-fGk">
                                                     <rect key="frame" x="13" y="13" width="3" height="3"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -3128,10 +3103,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="E6p-Nl-g2a">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="E6p-Nl-g2a">
                                 <rect key="frame" x="0.0" y="60" width="600" height="150"/>
                             </mapView>
-                            <navigationBar contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVH-Ib-hvf">
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVH-Ib-hvf">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
                                 <color key="backgroundColor" red="1" green="0.85098039219999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -3157,9 +3132,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 <color key="tintColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell_no_images" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell_no_images" rowHeight="180" id="Pbi-h0-7ZL" customClass="custom_cell_no_images" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="210" width="600" height="180"/>
+                                        <rect key="frame" x="0.0" y="22" width="600" height="180"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pbi-h0-7ZL" id="a63-sJ-B5B">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="Pbi-h0-7ZL" id="a63-sJ-B5B">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="179.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tmv-RA-ohJ">
@@ -3195,7 +3171,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstAttribute="trailing" secondItem="WVr-VX-QkW" secondAttribute="trailing" id="Nj1-Ih-JMO"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AqR-1p-QLu">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AqR-1p-QLu">
                                                     <rect key="frame" x="13" y="-1" width="54" height="14"/>
                                                     <fontDescription key="fontDescription" name="Raleway-Light" family="Raleway" pointSize="15"/>
                                                     <color key="textColor" white="0.2491608796" alpha="1" colorSpace="calibratedWhite"/>
@@ -3226,7 +3202,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstAttribute="width" constant="40" id="y8s-UE-TVp"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O7X-Ea-Miu">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O7X-Ea-Miu">
                                                     <rect key="frame" x="20" y="8" width="35" height="35"/>
                                                     <color key="backgroundColor" red="0.33819000910000002" green="0.64669822079999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -3234,14 +3210,14 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstAttribute="width" secondItem="O7X-Ea-Miu" secondAttribute="height" multiplier="1:1" id="Pdt-6C-ign"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="2we-b0-z2G">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="2we-b0-z2G">
                                                     <rect key="frame" x="519" y="34" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="194-GY-YP4"/>
                                                         <constraint firstAttribute="width" secondItem="2we-b0-z2G" secondAttribute="height" multiplier="1:1" id="6ra-Yq-JFF"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Iq-fI-RGX">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Iq-fI-RGX">
                                                     <rect key="frame" x="521" y="56" width="13" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="16"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3291,12 +3267,13 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell" rowHeight="178" id="GWp-tV-Laz" customClass="custom_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="211" width="600" height="178"/>
+                                        <rect key="frame" x="0.0" y="202" width="600" height="178"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GWp-tV-Laz" id="bWh-Nx-O0b">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="177.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dqv-uG-1I5">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dqv-uG-1I5">
                                                     <rect key="frame" x="292" y="14" width="15" height="15"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.64649884260000001" alpha="1" colorSpace="calibratedWhite"/>
@@ -3310,39 +3287,39 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstAttribute="width" constant="35" id="xsC-6I-BOk"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="rl8-mj-Vd1">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="rl8-mj-Vd1">
                                                     <rect key="frame" x="524" y="17" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="rl8-mj-Vd1" secondAttribute="height" multiplier="1:1" id="K6W-qq-Vn0"/>
                                                         <constraint firstAttribute="width" constant="40" id="VpW-e3-L7n"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i2l-XT-sbC">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i2l-XT-sbC">
                                                     <rect key="frame" x="69" y="157" width="45" height="14"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.35251736109999998" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Comment" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="syx-NA-wI8">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Comment" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="syx-NA-wI8">
                                                     <rect key="frame" x="69" y="46" width="499" height="21"/>
                                                     <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gha-1e-ZW0">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gha-1e-ZW0">
                                                     <rect key="frame" x="69" y="88" width="300" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="Kzv-qr-dTj"/>
                                                         <constraint firstAttribute="width" secondItem="gha-1e-ZW0" secondAttribute="height" multiplier="1:1" id="Oje-Ns-Oby"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYQ-Wu-RCy">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYQ-Wu-RCy">
                                                     <rect key="frame" x="528" y="40" width="13" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="16"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="shareButton.png" translatesAutoresizingMaskIntoConstraints="NO" id="ckb-z0-Tdx">
+                                                <imageView userInteractionEnabled="NO" alpha="0.94999998807907104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="shareButton.png" translatesAutoresizingMaskIntoConstraints="NO" id="ckb-z0-Tdx">
                                                     <rect key="frame" x="278" y="149" width="40" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="iwW-fw-NLE"/>
@@ -3354,7 +3331,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                     <color key="textColor" white="0.2491608796" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Replies" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QFl-2N-dXs" userLabel="Comments">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Replies" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QFl-2N-dXs" userLabel="Comments">
                                                     <rect key="frame" x="145" y="156" width="56" height="11"/>
                                                     <fontDescription key="fontDescription" name="Raleway" family="Raleway" pointSize="12"/>
                                                     <color key="textColor" white="0.35251736109999998" alpha="1" colorSpace="calibratedWhite"/>
@@ -3495,9 +3472,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="person_cell" selectionStyle="default" indentationWidth="10" reuseIdentifier="person_cell_id" rowHeight="155" id="ApN-hg-NQG" customClass="custom_cell_person" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="600" height="155"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ApN-hg-NQG" id="LhZ-9L-rKt">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="154.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Jx-Fk-Ife">
@@ -3507,13 +3485,13 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                         <constraint firstAttribute="width" secondItem="7Jx-Fk-Ife" secondAttribute="height" multiplier="1:1" id="qpk-jW-bjD"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUT-tr-Oc5">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUT-tr-Oc5">
                                                     <rect key="frame" x="108" y="25" width="46" height="21"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R0j-eK-T3p">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R0j-eK-T3p">
                                                     <rect key="frame" x="108" y="54" width="57" height="21"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="10"/>
                                                     <color key="textColor" red="0.49019607843137253" green="0.49019607843137253" blue="0.49019607843137253" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3573,9 +3551,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell" rowHeight="178" id="iSJ-DJ-HPq" customClass="custom_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="211" width="600" height="178"/>
+                                        <rect key="frame" x="0.0" y="177" width="600" height="178"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iSJ-DJ-HPq" id="XF0-U9-rg4">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="177.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bop-A2-Yog">
@@ -3590,7 +3569,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                                             <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mIF-sx-rNW">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mIF-sx-rNW">
                                                             <rect key="frame" x="10" y="10" width="35" height="35"/>
                                                             <color key="backgroundColor" red="0.33819000910000002" green="0.64669822079999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
@@ -3731,9 +3710,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="custom_cell_no_images" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom_cell_no_images" rowHeight="178" id="B9v-6e-cJg" customClass="custom_cell_no_images" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="211" width="600" height="178"/>
+                                        <rect key="frame" x="0.0" y="355" width="600" height="178"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B9v-6e-cJg" id="tGQ-4h-ock">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="177.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a38-HG-Oaw">
@@ -3924,7 +3904,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MD4-TN-RQ3">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MD4-TN-RQ3">
                                 <rect key="frame" x="-4" y="0.0" width="608" height="60"/>
                                 <color key="backgroundColor" red="1" green="0.85098039219999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -3946,9 +3926,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 <color key="tintColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="user_cell" selectionStyle="default" indentationWidth="23" reuseIdentifier="user_cell" id="3Hg-MT-z17" customClass="user_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="278" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="575" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Hg-MT-z17" id="Wtd-9y-m9H">
+                                            <rect key="frame" x="0.0" y="0.0" width="575" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UrO-1Z-9wT">
@@ -4039,7 +4020,7 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                         <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1g-YQ-uhz">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1g-YQ-uhz">
                                 <rect key="frame" x="-4" y="0.0" width="608" height="45"/>
                                 <color key="backgroundColor" red="1" green="0.85098039219999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -4065,9 +4046,10 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
                                 <color key="sectionIndexBackgroundColor" red="0.99607843139999996" green="0.99607843139999996" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="notification_cell" id="NZE-RB-okb" customClass="notification_cell" customModule="layout_1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="575" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="575" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NZE-RB-okb" id="bBO-on-UgO">
+                                            <rect key="frame" x="0.0" y="0.0" width="575" height="81.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hZ6-bz-ACL">
@@ -4244,7 +4226,6 @@ i. The laws of the State of California, excluding its conflicts of law rules, go
         <image name="button_whitecross.png" width="16" height="16"/>
         <image name="comment_tab_button.png" width="60" height="60"/>
         <image name="heart_empty.png" width="1000" height="874"/>
-        <image name="loginScreen.png" width="882" height="1172"/>
         <image name="noun_53504_cc.png" width="515" height="516"/>
         <image name="post_button.png" width="30" height="31"/>
         <image name="shareButton.png" width="120" height="31"/>

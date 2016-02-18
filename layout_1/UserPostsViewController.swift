@@ -46,7 +46,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
 //        
         loadUserComments()
         
-        var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("User Posts", action: "Show", label: "", value: nil).build() as [NSObject : AnyObject])
         
     }
@@ -174,9 +174,9 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     // Download an NSData representation of the image at the URL
                     let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                         if error == nil {
-                            image = UIImage(data: data)
+                            image = UIImage(data: data!)
                             
                             // Store the image in to our cache
                             self.imageCache[testImage
@@ -193,7 +193,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                             })
                         }
                         else {
-                            println("Error: \(error.localizedDescription)")
+                            print("Error: \(error!.localizedDescription)")
                         }
                     })
                     
@@ -336,17 +336,31 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         var params = ["fb_id":userFBID] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             //self.theJSON = NSJSONSerialization.JSONObjectWithData(json, options:.MutableLeaves, error: &err) as? NSDictionary
@@ -354,9 +368,9 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
                // self.showErrorScreen("top")
                 
@@ -436,23 +450,37 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
             var params = ["fbid":userFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch var error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+                print("Response: \(response)")
+                var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                 
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -472,7 +500,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                                 cellView.heart_icon?.image = UIImage(named: "heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                var curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -483,7 +511,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                                 cellView.heart_icon.image = UIImage(named: "heart_full.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                var curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -524,23 +552,37 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
             var params = ["fbid":userFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch var error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+                print("Response: \(response)")
+                var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                 
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -560,7 +602,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                                 cellView.heart_icon?.image = UIImage(named: "heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                var curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -571,7 +613,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                                 cellView.heart_icon?.image = UIImage(named: "heart_full.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                var curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -601,7 +643,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         let profView = mainStoryboard.instantiateViewControllerWithIdentifier("profile_scene_id") as! ProfileViewController
         
         
-        var authorLabel = sender.view as! UILabel
+        let authorLabel = sender.view as! UILabel
         
         let gotCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: authorLabel.tag, inSection: 0))
         

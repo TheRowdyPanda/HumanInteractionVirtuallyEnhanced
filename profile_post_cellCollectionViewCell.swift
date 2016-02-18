@@ -103,7 +103,7 @@ class profile_post_cellCollectionViewCell: UICollectionViewCell {
         
     }
 
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }

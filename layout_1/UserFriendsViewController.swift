@@ -35,7 +35,7 @@ class UserFriendsViewController: UIViewController, UITableViewDelegate, UITableV
             titleItem.title = "Followers"
             get_user_followers()
             
-            var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+            let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
             tracker.send(GAIDictionaryBuilder.createEventWithCategory("User Friends", action: "Show", label: "Followers", value: nil).build() as [NSObject : AnyObject])
             
         }
@@ -43,7 +43,7 @@ class UserFriendsViewController: UIViewController, UITableViewDelegate, UITableV
             titleItem.title = "Following"
             get_user_following()
             
-            var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+            let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
             tracker.send(GAIDictionaryBuilder.createEventWithCategory("User Friends", action: "Show", label: "Following", value: nil).build() as [NSObject : AnyObject])
         }
         
@@ -61,8 +61,8 @@ class UserFriendsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     override func viewDidAppear(animated: Bool) {
-        println(ajaxRequestString)
-        println(userFBID)
+        print(ajaxRequestString)
+        print(userFBID)
         
     
         
@@ -112,9 +112,9 @@ class UserFriendsViewController: UIViewController, UITableViewDelegate, UITableV
             
             // Download an NSData representation of the image at the URL
             let request: NSURLRequest = NSURLRequest(URL: imgURL)
-            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                 if error == nil {
-                    upimage = UIImage(data: data)
+                    upimage = UIImage(data: data!)
                     
                     // Store the image in to our cache
                     self.userImageCache[testUserImg] = upimage
@@ -125,7 +125,7 @@ class UserFriendsViewController: UIViewController, UITableViewDelegate, UITableV
                     })
                 }
                 else {
-                    println("Error: \(error.localizedDescription)")
+                    print("Error: \(error!.localizedDescription)")
                 }
             })
             
@@ -222,23 +222,38 @@ class UserFriendsViewController: UIViewController, UITableViewDelegate, UITableV
         var params = ["gUser_fbID":fbid, "iUser_fbID":userFBID] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 
@@ -284,23 +299,38 @@ class UserFriendsViewController: UIViewController, UITableViewDelegate, UITableV
         var params = ["gUser_fbID":fbid, "iUser_fbID":userFBID] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 

@@ -5,6 +5,8 @@
 //  Created by Rijul Gupta on 5/25/15.
 //  Copyright (c) 2015 Rijul Gupta. All rights reserved.
 //
+//OLD
+//Displays the location of a post in a mapview setting
 
 import UIKit
 import MapKit
@@ -49,8 +51,8 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
         titleItem.title = locationName
         
         var fullNameArr = latLon.componentsSeparatedByString(", ")
-        var latS: String = fullNameArr[0]
-        var lonS: String  = fullNameArr[1]
+        let latS: String = fullNameArr[0]
+        let lonS: String  = fullNameArr[1]
         
         
         let latF = (latS as NSString).doubleValue
@@ -108,7 +110,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
         
         
         
-        var label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
+        let label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
         label.textAlignment = NSTextAlignment.Center
         label.text = "Loading Comments..."
         //holdView.addSubview(label)
@@ -117,8 +119,8 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
         
         
         // Returns an animated UIImage
-        var url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        let url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+        let imageData = NSData(contentsOfURL: url!)
         
         
         let image = UIImage.animatedImageWithData(imageData!)//UIImage(named: imageName)
@@ -192,7 +194,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
         //3 islocation summary
         
         if(testImage == "none"){
-            var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
+            let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
             
             
 //            cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -421,7 +423,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
         }
         else if(testType == "2"){
             //image
-            var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell") as! custom_cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell") as! custom_cell
             
             
             cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -433,7 +435,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             
             
             
-            var numLiked = voterValueCache[indexPath.row] as String!
+            let numLiked = voterValueCache[indexPath.row] as String!
             //set the cell contents with the ajax data
             cell.comment_label?.text = theJSON["results"]![indexPath.row]["comments"] as! String!
             cell.comment_id = theJSON["results"]![indexPath.row]["c_id"] as! String!
@@ -455,17 +457,17 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             
             let asdfasd = cell.comment_label?.text!
             
-            var gotURL = self.parseHTMLString(asdfasd!)
+            let gotURL = self.parseHTMLString(asdfasd!)
             
-            println("OH YEAH:\(gotURL)")
+            print("OH YEAH:\(gotURL)")
             
             if(gotURL.count == 0){
-                println("NO SHOW")
+                print("NO SHOW")
                 cell.urlLink = "none"
             }
             else{
-                println("LAST TIME BuDDY:\(gotURL.last)")
-                cell.urlLink = gotURL.last! as! String
+                print("LAST TIME BuDDY:\(gotURL.last)")
+                cell.urlLink = gotURL.last! as String
                 
                 let linkTap = UITapGestureRecognizer(target: self, action:Selector("clickComLink:"))
                 // 4
@@ -493,13 +495,13 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             if( upimage == nil ) {
                 // If the image does not exist, we need to download it
                 
-                var imgURL: NSURL = NSURL(string: testUserImg)!
+                let imgURL: NSURL = NSURL(string: testUserImg)!
                 
                 // Download an NSData representation of the image at the URL
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                     if error == nil {
-                        upimage = UIImage(data: data)
+                        upimage = UIImage(data: data!)
                         
                         // Store the image in to our cache
                         self.userImageCache[testUserImg] = upimage
@@ -510,7 +512,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
                         })
                     }
                     else {
-                        println("Error: \(error.localizedDescription)")
+                        print("Error: \(error!.localizedDescription)")
                     }
                 })
                 
@@ -604,7 +606,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             
             //find out if the user has liked the comment or not
             //var hasLiked = theJSON["results"]![indexPath.row]["has_liked"] as! String!
-            var hasLiked = voterCache[indexPath.row] as String!
+            let hasLiked = voterCache[indexPath.row] as String!
             
             if(hasLiked == "yes"){
                 cell.heart_icon?.userInteractionEnabled = true
@@ -644,8 +646,8 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             cell.comImage?.addGestureRecognizer(focusImage)
             
             //give a loading gif to UI
-            var urlgif = NSBundle.mainBundle().URLForResource("loader2", withExtension: "gif")
-            var imageDatagif = NSData(contentsOfURL: urlgif!)
+            let urlgif = NSBundle.mainBundle().URLForResource("loader2", withExtension: "gif")
+            let imageDatagif = NSData(contentsOfURL: urlgif!)
             
             
             let imagegif = UIImage.animatedImageWithData(imageDatagif!)
@@ -658,13 +660,13 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             var image = self.imageCache[testImage]
             if( image == nil ) {
                 // If the image does not exist, we need to download it
-                var imgURL: NSURL = NSURL(string: testImage)!
+                let imgURL: NSURL = NSURL(string: testImage)!
                 
                 // Download an NSData representation of the image at the URL
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                     if error == nil {
-                        image = UIImage(data: data)
+                        image = UIImage(data: data!)
                         
                         // Store the image in to our cache
                         self.imageCache[testImage] = image
@@ -675,7 +677,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
                         })
                     }
                     else {
-                        println("Error: \(error.localizedDescription)")
+                        print("Error: \(error!.localizedDescription)")
                     }
                 })
                 
@@ -695,7 +697,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             return cell
         }
         else{
-            var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_location") as! custom_cell_location
+            let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_location") as! custom_cell_location
             
             
             
@@ -798,30 +800,43 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
         //peak cuppies and joe
         //let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_video_feed_2")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["fbid":savedFBID, "recentLocation":latLon] as Dictionary<String, String>
+        let params = ["fbid":savedFBID, "recentLocation":latLon] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
-            var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
+            var err: NSError? = nil
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
 
                 self.removeLoadingScreen()
             }
@@ -922,7 +937,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
     
     
     func showImageFullscreen(sender: UIGestureRecognizer){
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -956,7 +971,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
     
     func showLikers(sender: UIGestureRecognizer){
         
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -998,7 +1013,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
     
     func showReplies(sender: UIGestureRecognizer){
         
-        println("SLKFJS:LDKFJ")
+        print("SLKFJS:LDKFJ")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -1075,7 +1090,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
     func shareComment(sender: UIGestureRecognizer){
         
         
-        println("DID PRESS SHARE")
+        print("DID PRESS SHARE")
         var sharedButton:AnyObject
         //        if(sender.view? == UIImageView()){
         //
@@ -1209,13 +1224,13 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
         //var heartImage = sender.view? as UIImageView
         //get the main view
         
-        var indCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0))
+        let indCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0))
         
         if(indCell?.tag == 100){
             
-            var cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell_no_images
+            let cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell_no_images
             
-            var cID = cellView.comment_id
+            let cID = cellView.comment_id
             
             
             
@@ -1223,30 +1238,43 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             
             let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_toggle_comment_vote")
             //START AJAX
-            var request = NSMutableURLRequest(URL: url!)
-            var session = NSURLSession.sharedSession()
+            let request = NSMutableURLRequest(URL: url!)
+            let session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
-            var params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
+            let params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch let error as NSError {
+                err = error
+                request.HTTPBody = nil
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
-            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
-                var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
+                var err: NSError? = nil
+                
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1260,13 +1288,13 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
                             
                             
                             
-                            var testVote = parseJSON["results"]![0]["vote"] as! String!
+                            let testVote = parseJSON["results"]![0]["vote"] as! String!
                             
                             if(testVote == "no"){
                                 cellView.heart_icon?.image = UIImage(named: "heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -1277,7 +1305,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
                                 cellView.heart_icon.image = UIImage(named: "heart_full.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -1301,9 +1329,9 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
         
         if(indCell?.tag == 200){
             
-            var cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell
+            let cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell
             
-            var cID = cellView.comment_id
+            let cID = cellView.comment_id
             
             
             
@@ -1311,30 +1339,42 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             
             let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_toggle_comment_vote")
             //START AJAX
-            var request = NSMutableURLRequest(URL: url!)
-            var session = NSURLSession.sharedSession()
+            let request = NSMutableURLRequest(URL: url!)
+            let session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
-            var params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
+            let params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch let error as NSError {
+                err = error
+                request.HTTPBody = nil
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
-            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
+                
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+                
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                }
                 
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1348,13 +1388,13 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
                             
                             
                             
-                            var testVote = parseJSON["results"]![0]["vote"] as! String!
+                            let testVote = parseJSON["results"]![0]["vote"] as! String!
                             
                             if(testVote == "no"){
                                 cellView.heart_icon?.image = UIImage(named: "heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -1365,7 +1405,7 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
                                 cellView.heart_icon?.image = UIImage(named: "heart_full.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -1410,16 +1450,16 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
     func parseHTMLString(daString:NSString) -> [NSString]{
         
         
-        println("DA STRING:\(daString)")
-        let detector = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: nil)
+        print("DA STRING:\(daString)")
+        let detector = try? NSDataDetector(types: NSTextCheckingType.Link.rawValue)
         
         let fakejf = String(daString)
         //let length = fakejf.utf16Count
-        let length = count(fakejf.utf16)
-        let daString2 = daString as! String
+        let length = fakejf.utf16.count
+        let daString2 = daString as String
         // let links = detector?.matchesInString(daString, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as NSTextCheckingResult}
         
-        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as! NSTextCheckingResult}
+        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 }
         
         //        var d = daString as StringE
         //        if (d.containsString("Http://") == true){
@@ -1435,9 +1475,9 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
             }.map { link -> NSString in
                 //let urString = String(contentsOfURL: link.URL!)
                 let urString = link.URL!.absoluteString
-                println("DA STRING:\(urString)")
-                retString = urString!
-                return urString!
+                print("DA STRING:\(urString)")
+                retString = urString
+                return urString
         }
         
         // var newString = retString
@@ -1477,13 +1517,13 @@ class LocationPeakViewController: UIViewController, MKMapViewDelegate, UITableVi
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        var currentOffset = scrollView.contentOffset.y;
+        let currentOffset = scrollView.contentOffset.y;
         
-        var test = self.oldScrollPost - currentOffset
+        let test = self.oldScrollPost - currentOffset
         
-        println("SCROLL:\(currentOffset)")
-        println("SIZE:\(scrollView.contentSize.height)")
-        println("FRAME:\(scrollView.frame.height)")
+        print("SCROLL:\(currentOffset)")
+        print("SIZE:\(scrollView.contentSize.height)")
+        print("FRAME:\(scrollView.frame.height)")
         if(test >= 0 ){
             //  animateBarDown()
         }

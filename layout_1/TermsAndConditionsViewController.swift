@@ -4,7 +4,8 @@
 //
 //  Created by Rijul Gupta on 6/27/15.
 //  Copyright (c) 2015 Rijul Gupta. All rights reserved.
-//
+//NEW
+//Shows the terms and conditions of our app in the first screen.
 
 import UIKit
 

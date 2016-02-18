@@ -12,14 +12,14 @@ extension UIImage {
     
     class func animatedImageWithData(data: NSData) -> UIImage? {
         let source = CGImageSourceCreateWithData(data, nil)
-        let image = UIImage.animatedImageWithSource(source)
+        let image = UIImage.animatedImageWithSource(source!)
         
         return image
     }
     
     class func delayForImageAtIndex(index: UInt, source: CGImageSourceRef)
         -> Double {
-            var delay = 0.1
+            let delay = 0.1
 //            
 //            // Get dictionaries
 //            let cfProperties = CGImageSourceCopyPropertiesAtIndex(source, index,
@@ -62,7 +62,7 @@ extension UIImage {
         
         // Swap for modulo
         if a < b {
-            var c = a
+            let c = a
             a = b
             b = c
         }
@@ -103,7 +103,7 @@ extension UIImage {
         // Fill arrays
         for i in 0..<count {
             // Add image
-            images.append(CGImageSourceCreateImageAtIndex(source, i, nil))
+            images.append(CGImageSourceCreateImageAtIndex(source, i, nil)!)
             
             // At it's delay in cs
             var delaySeconds = UIImage.delayForImageAtIndex(UInt(i),
@@ -129,7 +129,7 @@ extension UIImage {
         var frame: UIImage
         var frameCount: Int
         for i in 0..<count {
-            frame = UIImage(CGImage: images[Int(i)])!
+            frame = UIImage(CGImage: images[Int(i)])
             frameCount = Int(delays[Int(i)] / gcd)
             
             for j in 0..<frameCount {

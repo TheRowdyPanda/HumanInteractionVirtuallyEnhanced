@@ -5,7 +5,8 @@
 //
 //  Created by Rijul Gupta on 3/10/15.
 //  Copyright (c) 2015 Rijul Gupta. All rights reserved.
-//
+//NEW
+//Let's you create a comment.
 
 import UIKit
 import MobileCoreServices
@@ -105,8 +106,8 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         //self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         
-        //self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+       // self.locationManager.requestAlwaysAuthorization()
         
         self.locationManager.startUpdatingLocation()
         // self.locationManager.distanceFilter = 3
@@ -116,7 +117,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         //  tracker.set(kGAIScreenName, value: "/index")
         //  tracker.send(GAIDictionaryBuilder.createScreenView().build())
         
-        var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Write Comment Scene", action: "Show Scene", label: "Showed", value: nil).build() as [NSObject : AnyObject])
         
         //  self.commentView.becomeFirstResponder()
@@ -135,7 +136,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         commentView.textColor = UIColor.lightGrayColor()
         commentView.delegate = self
         
-        let color: UIColor = UIColor( red: CGFloat(255.0/255.0), green: CGFloat(217.0/255.0), blue: CGFloat(0.0/255.0), alpha: CGFloat(1.0) )
+       // _: UIColor = UIColor( red: CGFloat(255.0/255.0), green: CGFloat(217.0/255.0), blue: CGFloat(0.0/255.0), alpha: CGFloat(1.0) )
         
         //        buttonHolder.layer.borderWidth=2.0
         //                buttonHolder.layer.masksToBounds = false
@@ -173,8 +174,18 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         let fbView = mainStoryboard.instantiateViewControllerWithIdentifier("main_tab_bar_scene_id") as! UITabBarController
         
         // self.dismissViewControllerAnimated(true, completion: nil)
+        //let rootView = mainStoryboard.instantiateInitialViewController() as
+       // self.presentViewController(fbView, animated: false, completion: nil)
         
-        self.presentViewController(fbView, animated: false, completion: nil)
+        let root = self.view.window?.rootViewController
+        self.view.window?.makeKeyAndVisible()
+        self.view.window?.makeKeyWindow()
+        // self.dismissViewControllerAnimated(false, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
+        root?.presentViewController(fbView, animated: true, completion: {
+            // oldSelf.dismissViewControllerAnimated(true, completion: nil)
+        })
+        
         
         
     }
@@ -182,27 +193,40 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     func getUserHashtags(){
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_user_get_hashtags")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
         let fbid = defaults.stringForKey("saved_fb_id") as String!
         
-        var params = ["fb_id":fbid, "gfb_id":fbid] as Dictionary<String, String>
+        let params = ["fb_id":fbid, "gfb_id":fbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
-            var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
-            
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
+            var err: NSError? = nil
+            var json: NSDictionary? = nil
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             //self.theJSON = NSJSONSerialization.JSONObjectWithData(json, options:.MutableLeaves, error: &err) as? NSDictionary
@@ -210,9 +234,9 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 self.showMessageWithError("Couldn't get hashtags", callback: "getUserHashtags")
                 
             }
@@ -258,7 +282,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     func showUserHashtags(){
         
         for i in 0...(self.fakeHashtags.count - 1){
-            var daID = self.hashtagJSON["results"]![i]["id"] as! NSString
+            let daID = self.hashtagJSON["results"]![i]["id"] as! NSString
             let daID2 = daID.integerValue
             self.createHashtag(self.fakeHashtags[i], id: daID2);
         }
@@ -291,13 +315,13 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     }
     func createHashtag(title: NSString, id:NSInteger){
         //let width = Int(title.length)*12
-        println("THE WiDTH\(self.hashtagScrollHolder.frame.width)")
-        var title = title as String
+        print("THE WiDTH\(self.hashtagScrollHolder.frame.width)")
+        let title = title as String
         let f = UIFont(name: "Lato-Light", size: 23.0)
         let width = Int(title.sizeWithAttributes([NSFontAttributeName: f!]).width) + 15
         let height = Int(title.sizeWithAttributes([NSFontAttributeName: UIFont.systemFontOfSize(24.0)]).height) + 15
         var xpos = 5.0
-        var widthSpacing = 12.0
+        let widthSpacing = 12.0
         if(hashtagButtons.count > 0){
             let holder = hashtagButtons.last! as UIButton!
             xpos = Double(holder.frame.origin.x) + Double(holder.frame.width) + widthSpacing;
@@ -315,7 +339,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
             self.widthFiller = testWidthFiller
         }
         
-        var newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: height))
+        let newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: height))
         newButton.backgroundColor = UIColor(red: (255.0/255.0), green: (165.0/255.0), blue: (0.0/255.0), alpha: 1.0)
         
         newButton.setTitle(title as String, forState: UIControlState.Normal)
@@ -359,11 +383,11 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        var scrollViewHeight = scrollView.frame.size.height;
-        var scrollContentSizeHeight = scrollView.contentSize.height;
-        var scrollOffset = scrollView.contentOffset.y;
+        let scrollViewHeight = scrollView.frame.size.height;
+        let scrollContentSizeHeight = scrollView.contentSize.height;
+        let scrollOffset = scrollView.contentOffset.y;
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+        _ = dispatch_time(DISPATCH_TIME_NOW,
             Int64(0.5 * Double(NSEC_PER_SEC)))
         
         self.isScrolling = true
@@ -393,8 +417,8 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
             let startingY = dabut.frame.origin.y
             let wChanger = CGFloat(5.0)
             let hChanger = CGFloat(10.0)
-            let wChanger2 = CGFloat(3.0)
-            let hChanger2 = CGFloat(6.0)
+            _ = CGFloat(3.0)
+            _ = CGFloat(6.0)
             
             UIView.animateWithDuration(time1, delay: 0.0, options: .CurveEaseOut, animations: {
                 
@@ -497,7 +521,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         
         let hashtagID = self.hashtagIdIndex[dabut.titleLabel!.text!]
         let isSelected = self.hashtagSelectedIndex[hashtagID!]
-        println("Hashtag is false:\(isSelected)")
+        print("Hashtag is false:\(isSelected)")
         if(isSelected == false){
             self.hashtagSelectedIndex[hashtagID!] = true
             self.makeHashtagSelected(dabut)
@@ -578,7 +602,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
             return true
         }
         else{
-            var alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before writing a post", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before writing a post", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
             return false
@@ -588,7 +612,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     
     func textViewDidBeginEditing(textView: UITextView) {
         
-        var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Write Comment Scene", action: "Start Comment", label: "Did Begin Editing", value: nil).build() as [NSObject : AnyObject])
         
     }
@@ -599,7 +623,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         //        let height2 = commentView.frame.height + oimageView.frame.height + buttonHolder.frame.height
         //        scrollView.contentSize = CGSize(width:scrollView.frame.width, height:height2)
         //
-        println("THIS IS THE SENT LOCATION:\(sentLocation)")
+        print("THIS IS THE SENT LOCATION:\(sentLocation)")
         
         
         
@@ -628,7 +652,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         chooseBLabel.addGestureRecognizer(rollTap)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
         
@@ -648,7 +672,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     func imageWithImage(image:UIImage, scaledToSize newSize:CGSize) -> UIImage{
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
         image.drawInRect(CGRectMake(0, 0, newSize.width, newSize.height))
-        var newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
     }
@@ -656,21 +680,21 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     
     func clickImage(sender: UIGestureRecognizer){
         if(self.hasSelectedAHashtag == false){
-            var alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before choosing a picture", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before choosing a picture", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }
         else{
-            println("CLICK CLICK CLICK")
+            print("CLICK CLICK CLICK")
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-                println("Button capture")
+                print("Button capture")
                 
                 imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
                 //imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
                 imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
                 //imagePicker.mediaTypes = [kUTTypeImage]
-                imagePicker.mediaTypes = [kUTTypeImage]
+                imagePicker.mediaTypes = [kUTTypeImage as String]
                 imagePicker.allowsEditing = true
                 
                 self.presentViewController(imagePicker, animated: true, completion: nil)
@@ -681,21 +705,21 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     }
     @IBAction func cameraButton(){
         if(self.hasSelectedAHashtag == false){
-            var alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before choosing a picture", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before choosing a picture", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }
         else{
-            println("CLICK CLICK CLICK")
+            print("CLICK CLICK CLICK")
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-                println("Button capture")
+                print("Button capture")
                 
                 imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
                 //imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
                 imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
                 //imagePicker.mediaTypes = [kUTTypeImage]
-                imagePicker.mediaTypes = [kUTTypeImage]
+                imagePicker.mediaTypes = [kUTTypeImage as String]
                 imagePicker.allowsEditing = true
                 
                 self.presentViewController(imagePicker, animated: true, completion: nil)
@@ -708,21 +732,21 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     
     func clickRoll(sender: UIGestureRecognizer){
         if(self.hasSelectedAHashtag == false){
-            var alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before choosing a picture", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before choosing a picture", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }
         else{
-            println("ROLLING ROLLING ROLLING")
+            print("ROLLING ROLLING ROLLING")
             /// if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-            println("Button capture")
+            print("Button capture")
             
             imagePicker = UIImagePickerController()
             imagePicker.delegate = self
             imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
             // imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
             //imagePicker.mediaTypes = [kUTTypeImage]
-            imagePicker.mediaTypes = [kUTTypeImage]
+            imagePicker.mediaTypes = [kUTTypeImage as String]
             imagePicker.allowsEditing = true
             
             self.presentViewController(imagePicker, animated: true, completion: nil)
@@ -733,21 +757,21 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     @IBAction func rollButton(){
         
         if(self.hasSelectedAHashtag == false){
-            var alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before choosing a picture", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Select A Hashtag", message: "Please select a hashtag before choosing a picture", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }
         else{
-            println("ROLLING ROLLING ROLLING")
+            print("ROLLING ROLLING ROLLING")
             /// if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-            println("Button capture")
+            print("Button capture")
             
             imagePicker = UIImagePickerController()
             imagePicker.delegate = self
             imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
             // imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
             //imagePicker.mediaTypes = [kUTTypeImage]
-            imagePicker.mediaTypes = [kUTTypeImage]
+            imagePicker.mediaTypes = [kUTTypeImage as String]
             imagePicker.allowsEditing = true
             
             self.presentViewController(imagePicker, animated: true, completion: nil)
@@ -791,7 +815,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         
         self.dismissViewControllerAnimated(true, completion: nil)
         
-        var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Write Comment Scene", action: "End Scene", label: "Canceled", value: nil).build() as [NSObject : AnyObject])
         
     }
@@ -810,7 +834,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
                 self.commentView.resignFirstResponder()
                 self.showLoadingScreen()
                 self.upload_picture()
-                var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+                let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
                 tracker.send(GAIDictionaryBuilder.createEventWithCategory("Write Comment Scene", action: "Send Comment", label: "Picture", value: nil).build() as [NSObject : AnyObject])
                 
             })
@@ -831,7 +855,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
                     self.commentView.resignFirstResponder()
                     self.showLoadingScreen()
                     self.upload_comment()
-                    var tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
+                    let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-58702464-2")
                     tracker.send(GAIDictionaryBuilder.createEventWithCategory("Write Comment Scene", action: "Send Comment", label: "No Picture", value: nil).build() as [NSObject : AnyObject])
                 }
                 
@@ -871,7 +895,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         
         
         
-        var label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
+        let label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
         label.textAlignment = NSTextAlignment.Center
         label.text = "Uploading Comment"
         //holdView.addSubview(label)
@@ -880,14 +904,14 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         
         
         // Returns an animated UIImage
-        var url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        let url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+        let imageData = NSData(contentsOfURL: url!)
         
         
         let image = UIImage.animatedImageWithData(imageData!)//UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
         
-        let smallerSquareSize = squareSize*0.6
+        _ = squareSize*0.6
         let gPos = (holdView.frame.width*0.2)/2
         let kPos = (holdView.frame.height*0.2)/2
         
@@ -913,18 +937,18 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     
     func upload_picture(){
         
-        println("start uploading picture")
-        var clientID = "cc30bb4b283f1b4"
+        print("start uploading picture")
+        let clientID = "cc30bb4b283f1b4"
         
-        var title = "title"
-        var description = "desc"
+        let title = "title"
+        let description = "desc"
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
         //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
         //__weak MLViewController *weakSelf = self;
-        weak var weakSelf: WriteCommentViewController? = self
+     //   weak var weakSelf: WriteCommentViewController? = self
         
         
         // Load the image data up in the background so we don't block the UI
@@ -932,9 +956,9 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         //var image : UIImage = UIImage(named:"laptop-classroom-1.jpg")!
         //let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         let image = self.savedImage// self.sendImg
-        var imageData: NSData = UIImageJPEGRepresentation(image, 0.50)
+        let imageData: NSData = UIImageJPEGRepresentation(image, 0.50)!
         
-        var requestBody: NSMutableData = NSMutableData()
+        let requestBody: NSMutableData = NSMutableData()
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
@@ -942,8 +966,8 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         //var urlString = "https://api.imgur.com/3/upload.json"
         let url = NSURL(string: "https://api.imgur.com/3/upload.json")
         
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         request.addValue("multipart/form-data; boundary=---------------------------0983745982375409872438752038475287", forHTTPHeaderField: "Content-Type")
@@ -951,60 +975,66 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         //request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         let foo = "-----------------------------0983745982375409872438752038475287\r\n"
-        var data = foo.dataUsingEncoding(NSUTF8StringEncoding)
+        let data = foo.dataUsingEncoding(NSUTF8StringEncoding)
         requestBody.appendData(data!)
         
         //Content-Disposition: attachment; name=\"image\"; filename=\".tiff\"\r\n
         
         let foo2 = "Content-Disposition: attachment; name=\"image\"; filename=\".tiff\"\r\n"
-        var data2 = foo2.dataUsingEncoding(NSUTF8StringEncoding)
+        let data2 = foo2.dataUsingEncoding(NSUTF8StringEncoding)
         requestBody.appendData(data2!)
         
         let foo3 = "Content-Type: application/octet-stream\r\n\r\n"
-        var data3 = foo3.dataUsingEncoding(NSUTF8StringEncoding)
+        let data3 = foo3.dataUsingEncoding(NSUTF8StringEncoding)
         requestBody.appendData(data3!)
         
         requestBody.appendData(imageData)
         
         let foo4 = "\r\n"
-        var data4 = foo4.dataUsingEncoding(NSUTF8StringEncoding)
+        let data4 = foo4.dataUsingEncoding(NSUTF8StringEncoding)
         requestBody.appendData(data4!)
         
         let foo5 = "-----------------------------0983745982375409872438752038475287--\r\n"
-        var data5 = foo5.dataUsingEncoding(NSUTF8StringEncoding)
+        let data5 = foo5.dataUsingEncoding(NSUTF8StringEncoding)
         requestBody.appendData(data5!)
         
         request.HTTPBody = requestBody
-        println("start uploading picture")
+        print("start uploading picture")
         
         //check if we need to submit comment
         var doIt = false
         dispatch_async(dispatch_get_main_queue(),{
             
             
-            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
-                var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
-                
-                println("start uploading picture")
+            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
+                var err: NSError? = nil
+                var json: NSDictionary? = nil
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
+                print("start uploading picture")
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
-                    println("start uploading picture")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
+                    print("start uploading picture")
                 }
                 else {
-                    println("start uploading picture")
+                    print("start uploading picture")
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
                     if let parseJSON = json {
                         
                         
-                        var test = parseJSON["data"]!["link"] as? String
-                        println(test!)
+                        let test = parseJSON["data"]!["link"] as? String
+                        print(test!)
                         self.imageLink = test!
                         
                         doIt = true
@@ -1034,7 +1064,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     
     func upload_comment(){
         
-        println("Data is: \(self.commentView.text)")
+        print("Data is: \(self.commentView.text)")
         
         var hashids = ""
         
@@ -1042,7 +1072,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
             if(self.hashtagSelectedIndex[self.hashtagIdIndex[self.fakeHashtags[i]]!]! == true){
                 let hashNum = self.hashtagIdIndex[self.fakeHashtags[i]]!
                 hashids += "\(hashNum)"
-                println("THE HASH ID:\(hashids)")
+                print("THE HASH ID:\(hashids)")
                 hashids += " "
             }
         }
@@ -1051,30 +1081,42 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_submit_this_comment")
         //let url = NSURL(string: "http://www.groopie.co/mobile_get2_top_comments")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["cBody":self.commentView.text, "fb_id":authorID, "latLon":sentLocation, "imgLink":imageLink, "hashids":hashids] as Dictionary<String, String>
+        let params = ["cBody":self.commentView.text, "fb_id":authorID, "latLon":sentLocation, "imgLink":imageLink, "hashids":hashids] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
-            var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
-            
-            
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
+            var err: NSError? = nil
+            var json: NSDictionary? = nil
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
                 self.showMessageWithError("Problem posting", callback: "upload_comment")
                 
@@ -1084,11 +1126,22 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
                 // check and make sure that json has a value using optional binding.
                 if let parseJSON = json {
                     
-                    
-                    
-                    
-                    
+                    if(self.commingFrom == "pickHashtags"){
+                     let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+                        let fbView = mainStoryboard.instantiateViewControllerWithIdentifier("main_tab_bar_scene_id") as! UITabBarController
+                    let root = self.view.window?.rootViewController
+                    self.view.window?.makeKeyAndVisible()
+                    self.view.window?.makeKeyWindow()
+                    // self.dismissViewControllerAnimated(false, completion: nil)
                     self.dismissViewControllerAnimated(true, completion: nil)
+                    root?.presentViewController(fbView, animated: true, completion: {
+                        // oldSelf.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                    }
+                    else{
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                    //self.dismissViewControllerAnimated(true, completion: nil)
                     
                 }
                 else {
@@ -1106,7 +1159,7 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
-        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.everythingScrollHolderBottomConstraint.constant = keyboardFrame.size.height + 20
@@ -1115,8 +1168,8 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        var info = notification.userInfo!
-        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let info = notification.userInfo!
+        //_: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.everythingScrollHolderBottomConstraint.constant = 0
@@ -1128,35 +1181,35 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     
     func textViewDidChange(textView: UITextView) { //Handle the text changes here
         // print(textView.text); //the textView parameter is the textView where text was changed
-        let height2 = commentView.frame.height + oimageView.frame.height + 200.0
+        _ = commentView.frame.height + oimageView.frame.height + 200.0
         // scrollView.contentSize = CGSize(width:scrollView.frame.width, height:height2)
         
     }
     
     
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: { (placemarks, error) -> Void in
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        CLGeocoder().reverseGeocodeLocation(manager.location!, completionHandler: { (placemarks, error) -> Void in
             
             if (error != nil) {
-                println("Error:" + error.localizedDescription)
+                print("Error:" + error!.localizedDescription)
                 return
                 
             }
             
-            if placemarks.count > 0 {
-                let pm = placemarks[0] as! CLPlacemark
+            if placemarks!.count > 0 {
+                let pm = placemarks?[0]
                 //self.displayLocationInfo(pm)
                 
-                self.sentLocation = String("\(pm.location.coordinate.latitude), \(pm.location.coordinate.longitude)")
+                self.sentLocation = String("\(pm!.location!.coordinate.latitude), \(pm!.location!.coordinate.longitude)")
                 //print(pm.location.coordinate.latitude)
                 //print(pm.location.coordinate.longitude)
                 
-                println(self.sentLocation)
+                print(self.sentLocation)
                 self.locationManager.stopUpdatingLocation()
                 
             }else {
-                println("Error with data")
+                print("Error with data")
                 
             }
             
@@ -1169,18 +1222,18 @@ class WriteCommentViewController: UIViewController, UINavigationControllerDelega
     {
         
         
-        var alert = UIAlertController(title: "Error", message:message as String, preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Error", message:message as String, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Reload", style: .Default, handler: { action in
             switch action.style{
             case .Default:
                 NSThread.detachNewThreadSelector(Selector(callback as String), toTarget:self, withObject: nil)
-                println("default")
+                print("default")
                 
             case .Cancel:
-                println("cancel")
+                print("cancel")
                 
             case .Destructive:
-                println("destructive")
+                print("destructive")
             }
         }))
         //        alert.addAction(UIAlertAction(title: "Shit!", style: .Default, handler: { action in

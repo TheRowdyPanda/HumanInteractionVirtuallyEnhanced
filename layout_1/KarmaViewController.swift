@@ -39,13 +39,13 @@ class KarmaViewController: UIViewController, UIScrollViewDelegate{
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        var currentOffset = scrollView.contentOffset.y;
+        let currentOffset = scrollView.contentOffset.y;
         
-        var test = self.oldScrollPost - currentOffset
+        let test = self.oldScrollPost - currentOffset
         
-        println("SCROLL:\(currentOffset)")
-        println("SIZE:\(scrollView.contentSize.height)")
-        println("FRAME:\(scrollView.frame.height)")
+        print("SCROLL:\(currentOffset)")
+        print("SIZE:\(scrollView.contentSize.height)")
+        print("FRAME:\(scrollView.frame.height)")
         if(test >= 0 ){
             //  animateBarDown()
         }

@@ -10,6 +10,7 @@
 		8E014DE71B9147B20071FF42 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E014DE61B91479C0071FF42 /* Lato-Bold.ttf */; };
 		8E014DE91B9148210071FF42 /* post_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E014DE81B9148210071FF42 /* post_button@2x.png */; };
 		8E014DEB1B914B490071FF42 /* button_whitecross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E014DEA1B914B490071FF42 /* button_whitecross@2x.png */; };
+		8E1FD53A1BBC82D40099709C /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E1FD5391BBC82D40099709C /* libc++.tbd */; };
 		8E58C63F1B6472C5008BE090 /* profile_post_cellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E58C63E1B6472C5008BE090 /* profile_post_cellCollectionViewCell.swift */; };
 		8E6E4DB41B6C63A600C8BFF0 /* lato in Resources */ = {isa = PBXBuildFile; fileRef = 8E6E4DB31B6C63A600C8BFF0 /* lato */; };
 		8E6E4DB61B6C64A700C8BFF0 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E6E4DB51B6C64A600C8BFF0 /* Lato-Light.ttf */; };
@@ -43,6 +44,8 @@
 		8EDB28621BB73F3B00409EC0 /* splashFlash.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB28611BB73F3B00409EC0 /* splashFlash.png */; };
 		8EDB97851B7EBB2700191514 /* loading_spinner.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB97841B7EBB2700191514 /* loading_spinner.gif */; };
 		8EF0B2291B8A88D50048D2B5 /* user_dm_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF0B2281B8A88D50048D2B5 /* user_dm_cell.swift */; };
+		8EF877411BC19C8800E53BEC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EF877401BC19C8800E53BEC /* CoreData.framework */; };
+		8EF877431BC1A1F500E53BEC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EF877421BC1A1F400E53BEC /* libz.tbd */; };
 		EC0798CD1B14107700507D7F /* LocationPeakViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0798CC1B14107700507D7F /* LocationPeakViewController.swift */; };
 		EC0798CF1B14122800507D7F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC0798CE1B14122800507D7F /* MapKit.framework */; };
 		EC21857D1AAA7E2E00703CF9 /* custom_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC21857C1AAA7E2E00703CF9 /* custom_cell.swift */; };
@@ -50,10 +53,7 @@
 		EC47B86C1ABFDA0A00ADBCC6 /* back2.png in Resources */ = {isa = PBXBuildFile; fileRef = EC47B86A1ABFDA0A00ADBCC6 /* back2.png */; };
 		EC47B86E1AC1360000ADBCC6 /* reply_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC47B86D1AC135FF00ADBCC6 /* reply_cell.swift */; };
 		EC47B87D1AC480EA00ADBCC6 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC47B87C1AC480EA00ADBCC6 /* libGoogleAnalyticsServices.a */; };
-		EC47B87F1AC480F300ADBCC6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC47B87E1AC480F300ADBCC6 /* CoreData.framework */; };
 		EC47B8811AC480FA00ADBCC6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC47B8801AC480FA00ADBCC6 /* SystemConfiguration.framework */; };
-		EC47B8831AC4810E00ADBCC6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EC47B8821AC4810E00ADBCC6 /* libz.dylib */; };
-		EC47B8851AC4811C00ADBCC6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EC47B8841AC4811C00ADBCC6 /* libsqlite3.dylib */; };
 		EC4EDD161AAF76D2006270F3 /* WriteCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4EDD151AAF76D2006270F3 /* WriteCommentViewController.swift */; };
 		EC4EDD181AAFA53B006270F3 /* honey_full.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EC4EDD171AAFA53B006270F3 /* honey_full.jpg */; };
 		EC4EDD1A1AAFA56E006270F3 /* honey_empty.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EC4EDD191AAFA56E006270F3 /* honey_empty.jpg */; };
@@ -112,7 +112,6 @@
 		ECBAAFDA1B1BB4FD00A3F661 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECBAAFD91B1BB4FD00A3F661 /* FBSDKShareKit.framework */; };
 		ECBAAFDC1B1BB93B00A3F661 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECBAAFDB1B1BB93B00A3F661 /* FBSDKCoreKit.framework */; };
 		ECC0B98F1AD3BE6C00B21BD0 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC0B98E1AD3BE6C00B21BD0 /* NotificationsViewController.swift */; };
-		ECCBD1271ACE4E2F005C0495 /* loginScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = ECCBD1261ACE4E2F005C0495 /* loginScreen.png */; };
 		ECCF393A1AD32D0300F8D6EB /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECCF39311AD32D0300F8D6EB /* Raleway-Bold.ttf */; };
 		ECCF393B1AD32D0300F8D6EB /* Raleway-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECCF39321AD32D0300F8D6EB /* Raleway-ExtraBold.ttf */; };
 		ECCF393C1AD32D0300F8D6EB /* Raleway-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECCF39331AD32D0300F8D6EB /* Raleway-ExtraLight.ttf */; };
@@ -126,8 +125,6 @@
 		ECDF21D51B2693F2009BBC07 /* Alau.me.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECDF21D41B2693F2009BBC07 /* Alau.me.framework */; };
 		ECE014531B3F7AD20064045B /* TermsAndConditionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE014521B3F7AD20064045B /* TermsAndConditionsViewController.swift */; };
 		ECF3C0161B2D5F7C00C70CE5 /* shareButton.png in Resources */ = {isa = PBXBuildFile; fileRef = ECF3C0151B2D5F7C00C70CE5 /* shareButton.png */; };
-		ECF3C0191B2D616700C70CE5 /* heart_full.png in Resources */ = {isa = PBXBuildFile; fileRef = ECF3C0171B2D616700C70CE5 /* heart_full.png */; };
-		ECF3C01A1B2D616700C70CE5 /* heart_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = ECF3C0181B2D616700C70CE5 /* heart_empty.png */; };
 		ECF5BDAD1AD581320098DD95 /* comment_tab_button.png in Resources */ = {isa = PBXBuildFile; fileRef = ECF5BDAC1AD581320098DD95 /* comment_tab_button.png */; };
 		ECF5BDAF1AD582F10098DD95 /* Like_tab_button.png in Resources */ = {isa = PBXBuildFile; fileRef = ECF5BDAE1AD582F10098DD95 /* Like_tab_button.png */; };
 		ECF5BDB11AD587D00098DD95 /* notification_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF5BDB01AD587D00098DD95 /* notification_cell.swift */; };
@@ -150,6 +147,7 @@
 		8E014DE61B91479C0071FF42 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		8E014DE81B9148210071FF42 /* post_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "post_button@2x.png"; sourceTree = "<group>"; };
 		8E014DEA1B914B490071FF42 /* button_whitecross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_whitecross@2x.png"; sourceTree = "<group>"; };
+		8E1FD5391BBC82D40099709C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		8E58C63E1B6472C5008BE090 /* profile_post_cellCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = profile_post_cellCollectionViewCell.swift; path = ../profile_post_cellCollectionViewCell.swift; sourceTree = "<group>"; };
 		8E6E4DB31B6C63A600C8BFF0 /* lato */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lato; sourceTree = "<group>"; };
 		8E6E4DB51B6C64A600C8BFF0 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lato-Light.ttf"; path = "layout_1/lato/Lato-Light.ttf"; sourceTree = "<group>"; };
@@ -169,7 +167,6 @@
 		8EAE62AB1BBB71E0001918BA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8EAE62AD1BBB72E5001918BA /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		8EAE62AF1BBB7303001918BA /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		8EAE62B11BBB73AB001918BA /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		8EAE62B31BBB74C3001918BA /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8EAE62B51BBB7502001918BA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8EAE62B71BBB7508001918BA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -184,6 +181,8 @@
 		8EDB28611BB73F3B00409EC0 /* splashFlash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashFlash.png; sourceTree = "<group>"; };
 		8EDB97841B7EBB2700191514 /* loading_spinner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_spinner.gif; sourceTree = "<group>"; };
 		8EF0B2281B8A88D50048D2B5 /* user_dm_cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = user_dm_cell.swift; path = ../user_dm_cell.swift; sourceTree = "<group>"; };
+		8EF877401BC19C8800E53BEC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		8EF877421BC1A1F400E53BEC /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		EC0798CC1B14107700507D7F /* LocationPeakViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPeakViewController.swift; sourceTree = "<group>"; };
 		EC0798CE1B14122800507D7F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EC21856F1AAA6D4F00703CF9 /* PMBPostTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMBPostTableViewCell.h; sourceTree = "<group>"; };
@@ -202,10 +201,7 @@
 		EC47B87A1AC47E9B00ADBCC6 /* GAITrackedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		EC47B87B1AC47E9B00ADBCC6 /* GAITracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		EC47B87C1AC480EA00ADBCC6 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = ../../../Downloads/GoogleAnalyticsServicesiOS_3.10/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		EC47B87E1AC480F300ADBCC6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		EC47B8801AC480FA00ADBCC6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		EC47B8821AC4810E00ADBCC6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		EC47B8841AC4811C00ADBCC6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EC4EDD151AAF76D2006270F3 /* WriteCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteCommentViewController.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		EC4EDD171AAFA53B006270F3 /* honey_full.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = honey_full.jpg; sourceTree = "<group>"; };
 		EC4EDD191AAFA56E006270F3 /* honey_empty.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = honey_empty.jpg; sourceTree = "<group>"; };
@@ -269,7 +265,6 @@
 		ECBAAFD91B1BB4FD00A3F661 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		ECBAAFDB1B1BB93B00A3F661 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		ECC0B98E1AD3BE6C00B21BD0 /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
-		ECCBD1261ACE4E2F005C0495 /* loginScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginScreen.png; sourceTree = "<group>"; };
 		ECCF39311AD32D0300F8D6EB /* Raleway-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-Bold.ttf"; path = "layout_1/Raleway/Raleway-Bold.ttf"; sourceTree = "<group>"; };
 		ECCF39321AD32D0300F8D6EB /* Raleway-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-ExtraBold.ttf"; path = "layout_1/Raleway/Raleway-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ECCF39331AD32D0300F8D6EB /* Raleway-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-ExtraLight.ttf"; path = "layout_1/Raleway/Raleway-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -283,8 +278,6 @@
 		ECDF21D41B2693F2009BBC07 /* Alau.me.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alau.me.framework; sourceTree = "<group>"; };
 		ECE014521B3F7AD20064045B /* TermsAndConditionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsViewController.swift; sourceTree = "<group>"; };
 		ECF3C0151B2D5F7C00C70CE5 /* shareButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shareButton.png; sourceTree = "<group>"; };
-		ECF3C0171B2D616700C70CE5 /* heart_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart_full.png; sourceTree = "<group>"; };
-		ECF3C0181B2D616700C70CE5 /* heart_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart_empty.png; sourceTree = "<group>"; };
 		ECF5BDAC1AD581320098DD95 /* comment_tab_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment_tab_button.png; sourceTree = "<group>"; };
 		ECF5BDAE1AD582F10098DD95 /* Like_tab_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Like_tab_button.png; sourceTree = "<group>"; };
 		ECF5BDB01AD587D00098DD95 /* notification_cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = notification_cell.swift; sourceTree = "<group>"; };
@@ -298,6 +291,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EF877431BC1A1F500E53BEC /* libz.tbd in Frameworks */,
+				8EF877411BC19C8800E53BEC /* CoreData.framework in Frameworks */,
+				8E1FD53A1BBC82D40099709C /* libc++.tbd in Frameworks */,
 				8EAE62B81BBB7508001918BA /* UIKit.framework in Frameworks */,
 				8EAE62B61BBB7502001918BA /* QuartzCore.framework in Frameworks */,
 				8EAE62B41BBB74C3001918BA /* OpenGLES.framework in Frameworks */,
@@ -311,11 +307,8 @@
 				ECDF21CF1B269084009BBC07 /* Security.framework in Frameworks */,
 				ECBAAFDA1B1BB4FD00A3F661 /* FBSDKShareKit.framework in Frameworks */,
 				EC0798CF1B14122800507D7F /* MapKit.framework in Frameworks */,
-				EC47B8851AC4811C00ADBCC6 /* libsqlite3.dylib in Frameworks */,
-				EC47B8831AC4810E00ADBCC6 /* libz.dylib in Frameworks */,
 				EC47B8811AC480FA00ADBCC6 /* SystemConfiguration.framework in Frameworks */,
 				8ED6D7E41B8311FB008C5B1F /* FBSDKLoginKit.framework in Frameworks */,
-				EC47B87F1AC480F300ADBCC6 /* CoreData.framework in Frameworks */,
 				EC47B87D1AC480EA00ADBCC6 /* libGoogleAnalyticsServices.a in Frameworks */,
 				ECBAAFDC1B1BB93B00A3F661 /* FBSDKCoreKit.framework in Frameworks */,
 				EC4EDD591AB012E6006270F3 /* FacebookSDK.framework in Frameworks */,
@@ -334,6 +327,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E0C15661C76404200552FEF /* other images */ = {
+			isa = PBXGroup;
+			children = (
+				ECFDDD1B1AB94FF8000F5880 /* clicktoupload.png */,
+				ECFDDD171AB7B9B3000F5880 /* blank.png */,
+				ECA1F1FF1AD1EE710072DE05 /* loader.gif */,
+				ECA1F2011AD1F3070072DE05 /* loader2.gif */,
+				EC4EDD171AAFA53B006270F3 /* honey_full.jpg */,
+				EC4EDD191AAFA56E006270F3 /* honey_empty.jpg */,
+				EC47B8691ABFDA0A00ADBCC6 /* back1.png */,
+				EC47B86A1ABFDA0A00ADBCC6 /* back2.png */,
+				8EA41A371BB0FB7200A7DBCF /* IntroImage1.jpg */,
+				8EA41A381BB0FB7200A7DBCF /* IntroImage2.jpg */,
+				8EA41A391BB0FB7200A7DBCF /* IntroImage3.jpg */,
+			);
+			name = "other images";
+			sourceTree = "<group>";
+		};
+		8E0C15671C76405800552FEF /* table cells */ = {
+			isa = PBXGroup;
+			children = (
+				EC21857C1AAA7E2E00703CF9 /* custom_cell.swift */,
+				8EB5AF081B8F12C500273428 /* me_dm_cell.swift */,
+				8EF0B2281B8A88D50048D2B5 /* user_dm_cell.swift */,
+				EC99A7821B11022F002CED89 /* custom_cell_location.swift */,
+				ECA628C71ABCBE0900B538DA /* custom_cell_no_images.swift */,
+				8EC87D9E1B5E13D20068E034 /* custom_cell_person.swift */,
+				8E58C63E1B6472C5008BE090 /* profile_post_cellCollectionViewCell.swift */,
+				ECA90EB71AB5445200195A75 /* profile_cell.swift */,
+				ECA90EBD1AB55FFA00195A75 /* user_cell.swift */,
+				EC47B86D1AC135FF00ADBCC6 /* reply_cell.swift */,
+				ECF5BDB01AD587D00098DD95 /* notification_cell.swift */,
+			);
+			name = "table cells";
+			sourceTree = "<group>";
+		};
+		8E0C15681C76413D00552FEF /* New View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				EC99869C1AABECD300E0583D /* ProfileViewController.swift */,
+				EC4EDD151AAF76D2006270F3 /* WriteCommentViewController.swift */,
+				ECE014521B3F7AD20064045B /* TermsAndConditionsViewController.swift */,
+				8EC87DA01B5E15E00068E034 /* PersonTableViewController.swift */,
+				8EDA8D1B1B89A3DD007CDD82 /* DirectMessagingViewController.swift */,
+				8EC87D9A1B5C564E0068E034 /* pickHashtagsInitialViewController.swift */,
+				ECAE3B121AB188F500B5AD65 /* MyProfileViewController.swift */,
+				ECAE3B181AB3A6E800B5AD65 /* FirstSceneViewController.swift */,
+				ECC0B98E1AD3BE6C00B21BD0 /* NotificationsViewController.swift */,
+			);
+			name = "New View Controllers";
+			sourceTree = "<group>";
+		};
 		EC47B8711AC47E8D00ADBCC6 /* Google header files */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,9 +421,6 @@
 				8E014DEA1B914B490071FF42 /* button_whitecross@2x.png */,
 				EC8016F61B2E9AE8008CC953 /* noun_53504_cc.png */,
 				8EB5AF0A1B905B1400273428 /* chat_button@2x.png */,
-				ECF3C0171B2D616700C70CE5 /* heart_full.png */,
-				ECF3C0181B2D616700C70CE5 /* heart_empty.png */,
-				ECCBD1261ACE4E2F005C0495 /* loginScreen.png */,
 				EC81397C1AC9DA9700985BC5 /* Camera Roll.png */,
 				EC8B8AE81ACF5527002AD793 /* logo.png */,
 				ECF5BDB21AD5F9190098DD95 /* alert_icon.png */,
@@ -419,10 +461,12 @@
 		EC9B53AE1AA7ED1500348B31 = {
 			isa = PBXGroup;
 			children = (
+				8EF877421BC1A1F400E53BEC /* libz.tbd */,
+				8EF877401BC19C8800E53BEC /* CoreData.framework */,
+				8E1FD5391BBC82D40099709C /* libc++.tbd */,
 				8EAE62B71BBB7508001918BA /* UIKit.framework */,
 				8EAE62B51BBB7502001918BA /* QuartzCore.framework */,
 				8EAE62B31BBB74C3001918BA /* OpenGLES.framework */,
-				8EAE62B11BBB73AB001918BA /* libc++.dylib */,
 				8EAE62AF1BBB7303001918BA /* MessageUI.framework */,
 				8EAE62AD1BBB72E5001918BA /* CoreMotion.framework */,
 				8EAE62AB1BBB71E0001918BA /* CoreGraphics.framework */,
@@ -446,10 +490,7 @@
 				ECCF39371AD32D0300F8D6EB /* Raleway-Regular.ttf */,
 				ECCF39381AD32D0300F8D6EB /* Raleway-SemiBold.ttf */,
 				ECCF39391AD32D0300F8D6EB /* Raleway-Thin.ttf */,
-				EC47B8841AC4811C00ADBCC6 /* libsqlite3.dylib */,
-				EC47B8821AC4810E00ADBCC6 /* libz.dylib */,
 				EC47B8801AC480FA00ADBCC6 /* SystemConfiguration.framework */,
-				EC47B87E1AC480F300ADBCC6 /* CoreData.framework */,
 				EC47B87C1AC480EA00ADBCC6 /* libGoogleAnalyticsServices.a */,
 				EC4EDD571AB012DB006270F3 /* frameworks */,
 				EC9B53B91AA7ED1500348B31 /* layout_1 */,
@@ -470,53 +511,26 @@
 		EC9B53B91AA7ED1500348B31 /* layout_1 */ = {
 			isa = PBXGroup;
 			children = (
+				8E0C15681C76413D00552FEF /* New View Controllers */,
+				8E0C15671C76405800552FEF /* table cells */,
+				8E0C15661C76404200552FEF /* other images */,
 				EC81399A1ACC5D5400985BC5 /* fonts */,
 				EC8B8AEA1ACF5624002AD793 /* appIcons */,
 				EC81397B1AC9DA5A00985BC5 /* icons */,
-				ECFDDD1B1AB94FF8000F5880 /* clicktoupload.png */,
-				ECFDDD171AB7B9B3000F5880 /* blank.png */,
 				EC4EDD4E1AAFF32D006270F3 /* layout_1.xcdatamodeld */,
-				ECA1F1FF1AD1EE710072DE05 /* loader.gif */,
-				ECA1F2011AD1F3070072DE05 /* loader2.gif */,
-				EC4EDD171AAFA53B006270F3 /* honey_full.jpg */,
-				EC4EDD191AAFA56E006270F3 /* honey_empty.jpg */,
-				EC47B8691ABFDA0A00ADBCC6 /* back1.png */,
-				EC47B86A1ABFDA0A00ADBCC6 /* back2.png */,
-				8EA41A371BB0FB7200A7DBCF /* IntroImage1.jpg */,
-				8EA41A381BB0FB7200A7DBCF /* IntroImage2.jpg */,
-				8EA41A391BB0FB7200A7DBCF /* IntroImage3.jpg */,
 				EC9B53BC1AA7ED1500348B31 /* AppDelegate.swift */,
-				EC21857C1AAA7E2E00703CF9 /* custom_cell.swift */,
-				8EB5AF081B8F12C500273428 /* me_dm_cell.swift */,
-				8EF0B2281B8A88D50048D2B5 /* user_dm_cell.swift */,
-				EC99A7821B11022F002CED89 /* custom_cell_location.swift */,
-				ECA628C71ABCBE0900B538DA /* custom_cell_no_images.swift */,
-				8EC87D9E1B5E13D20068E034 /* custom_cell_person.swift */,
-				8E58C63E1B6472C5008BE090 /* profile_post_cellCollectionViewCell.swift */,
-				ECA90EB71AB5445200195A75 /* profile_cell.swift */,
-				ECA90EBD1AB55FFA00195A75 /* user_cell.swift */,
-				EC47B86D1AC135FF00ADBCC6 /* reply_cell.swift */,
-				ECF5BDB01AD587D00098DD95 /* notification_cell.swift */,
 				EC21856F1AAA6D4F00703CF9 /* PMBPostTableViewCell.h */,
 				EC9986961AABE31F00E0583D /* ThirdViewController.swift */,
 				EC0798CC1B14107700507D7F /* LocationPeakViewController.swift */,
 				EC9B53C01AA7ED1500348B31 /* Main.storyboard */,
-				8EC87DA01B5E15E00068E034 /* PersonTableViewController.swift */,
-				8EDA8D1B1B89A3DD007CDD82 /* DirectMessagingViewController.swift */,
-				8EC87D9A1B5C564E0068E034 /* pickHashtagsInitialViewController.swift */,
 				EC9B53C31AA7ED1500348B31 /* Images.xcassets */,
 				EC9B53C51AA7ED1500348B31 /* LaunchScreen.xib */,
 				EC9B53BA1AA7ED1500348B31 /* Supporting Files */,
-				EC99869C1AABECD300E0583D /* ProfileViewController.swift */,
-				EC4EDD151AAF76D2006270F3 /* WriteCommentViewController.swift */,
-				ECE014521B3F7AD20064045B /* TermsAndConditionsViewController.swift */,
 				EC4EDD1B1AAFF217006270F3 /* data.swift */,
 				EC4EDD531AB00CEE006270F3 /* FBLoginViewController.swift */,
 				8EA41A351BB0B51F00A7DBCF /* ContentViewController.swift */,
 				EC4EDD561AB010BD006270F3 /* Bridging-Header.h */,
 				ECAE3B161AB2433A00B5AD65 /* Gif.swift */,
-				ECAE3B181AB3A6E800B5AD65 /* FirstSceneViewController.swift */,
-				ECAE3B121AB188F500B5AD65 /* MyProfileViewController.swift */,
 				EC8016F41B2E6C26008CC953 /* ImageFocusController.swift */,
 				ECA90EBF1AB5653E00195A75 /* KarmaViewController.swift */,
 				ECA90EB91AB54F7800195A75 /* UserPostsViewController.swift */,
@@ -525,7 +539,6 @@
 				ECB095821ACC7C9200802E9F /* CustomTabBarViewController.swift */,
 				ECB0958A1ACCEB3400802E9F /* CommentLikersViewController.swift */,
 				ECB0958C1ACD0BA300802E9F /* CommentReplyViewController.swift */,
-				ECC0B98E1AD3BE6C00B21BD0 /* NotificationsViewController.swift */,
 				EC96CF7B1ADE3115002A3133 /* FollowingViewController.swift */,
 			);
 			path = layout_1;
@@ -600,7 +613,9 @@
 		EC9B53AF1AA7ED1500348B31 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Rijul Gupta";
 				TargetAttributes = {
 					EC9B53B61AA7ED1500348B31 = {
@@ -646,7 +661,6 @@
 				ECCF393B1AD32D0300F8D6EB /* Raleway-ExtraBold.ttf in Resources */,
 				ECCF393C1AD32D0300F8D6EB /* Raleway-ExtraLight.ttf in Resources */,
 				ECCF393D1AD32D0300F8D6EB /* Raleway-Heavy.ttf in Resources */,
-				ECF3C0191B2D616700C70CE5 /* heart_full.png in Resources */,
 				8EA41A3A1BB0FB7200A7DBCF /* IntroImage1.jpg in Resources */,
 				ECCF393E1AD32D0300F8D6EB /* Raleway-Light.ttf in Resources */,
 				ECCF393F1AD32D0300F8D6EB /* Raleway-Medium.ttf in Resources */,
@@ -667,14 +681,12 @@
 				8EB5AF0B1B905B1400273428 /* chat_button@2x.png in Resources */,
 				EC8B8AEB1ACF5624002AD793 /* appIcons in Resources */,
 				EC81398B1AC9DA9700985BC5 /* Camera Roll.png in Resources */,
-				ECF3C01A1B2D616700C70CE5 /* heart_empty.png in Resources */,
 				EC9B53C21AA7ED1500348B31 /* Main.storyboard in Resources */,
 				EC4EDD1A1AAFA56E006270F3 /* honey_empty.jpg in Resources */,
 				EC8139931AC9DA9700985BC5 /* Location.png in Resources */,
 				EC8139911AC9DA9700985BC5 /* Like_Selected.png in Resources */,
 				ECFDDD1C1AB94FF8000F5880 /* clicktoupload.png in Resources */,
 				ECF5BDAD1AD581320098DD95 /* comment_tab_button.png in Resources */,
-				ECCBD1271ACE4E2F005C0495 /* loginScreen.png in Resources */,
 				EC8139951AC9DA9700985BC5 /* Me.png in Resources */,
 				8E6E4DB41B6C63A600C8BFF0 /* lato in Resources */,
 				EC9B53C71AA7ED1500348B31 /* LaunchScreen.xib in Resources */,
@@ -820,6 +832,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -891,6 +904,7 @@
 				CLANG_STATIC_ANALYZER_MODE_ON_ANALYZE_ACTION = shallow;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/rijulgupta/Documents/FacebookSDK,
@@ -904,6 +918,7 @@
 					/Users/rijulgupta/Downloads/GoogleAnalyticsServicesiOS_3.10,
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rijulgupta.hive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "layout_1/Bridging-Header.h";
@@ -919,6 +934,7 @@
 				CLANG_STATIC_ANALYZER_MODE_ON_ANALYZE_ACTION = shallow;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/rijulgupta/Documents/FacebookSDK,
@@ -932,8 +948,9 @@
 					/Users/rijulgupta/Downloads/GoogleAnalyticsServicesiOS_3.10,
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rijulgupta.hive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2e825298-c325-4666-ba80-dff05f4c59d7";
 				SWIFT_OBJC_BRIDGING_HEADER = "layout_1/Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -953,6 +970,7 @@
 				);
 				INFOPLIST_FILE = layout_1Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rijulgupta.hive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/layout_1.app/layout_1";
 			};
@@ -968,6 +986,7 @@
 				);
 				INFOPLIST_FILE = layout_1Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rijulgupta.hive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/layout_1.app/layout_1";
 			};

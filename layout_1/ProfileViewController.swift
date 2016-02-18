@@ -4,7 +4,8 @@
 //
 //  Created by Rijul Gupta on 3/7/15.
 //  Copyright (c) 2015 Rijul Gupta. All rights reserved.
-//
+//NEW
+//Shows another users profile.
 
 
 import UIKit
@@ -82,52 +83,57 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         //titleItem.title = "TESTING"
-        println("THE WIDTH IS:\(self.view.frame.width)")
+        //print("THE WIDTH IS:\(self.view.frame.width)")
         
-        var url = NSBundle.mainBundle().URLForResource("loader2", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        
+        //sets loading gif while getting the images.
+        let url = NSBundle.mainBundle().URLForResource("loader2", withExtension: "gif")
+        _ = NSData(contentsOfURL: url!)
         
         self.postSize = Double(self.view.frame.width/2.0) + 0.0
         
         
+        //sets up follow button
         self.followButton.backgroundColor = UIColor(red: (141.0/255.0), green: (198.0/255.0), blue: (63.0/255.0), alpha: 1.0)
         self.followButton.layer.cornerRadius = 5
         self.followButton.clipsToBounds = true
-        
         self.followButton.addTarget(self, action: "followUser", forControlEvents: UIControlEvents.TouchUpInside)
-        
+       
+        //sets up block button
         self.blockButton.backgroundColor = UIColor(red: (242.0/255.0), green: (108.0/255.0), blue: (79.0/255.0), alpha: 1.0)
         self.blockButton.layer.cornerRadius = 5
         self.blockButton.clipsToBounds = true
         self.blockButton.addTarget(self, action: "blockUser", forControlEvents: UIControlEvents.TouchUpInside)
         
+        //sets up profile pic
         self.profilePic.layer.cornerRadius = self.profilePic.frame.width/2.0
         self.profilePic.clipsToBounds = true
         self.profilePic.layer.borderColor = UIColor(red: 0.0, green: (199.0/255.0), blue: (169.0/255.0), alpha: 1.0).CGColor
         self.profilePic.layer.borderWidth = 2.0
         
-        var myCustomViewController: ViewController = ViewController(nibName: nil, bundle: nil)
-        
+        //gets user location from previous view controller
+        let myCustomViewController: ViewController = ViewController(nibName: nil, bundle: nil)
         currentUserLocation = myCustomViewController.currentUserLocation
         
+        //Sets persons name.
         self.nameLabel.text = self.userName//.uppercaseString
         
-      //  navTitle.title = "My Profile"
-        
-        let color: UIColor = UIColor( red: CGFloat(255.0/255.0), green: CGFloat(217.0/255.0), blue: CGFloat(0.0/255.0), alpha: CGFloat(1.0) )
-        
+        //sets up exit button
         self.exitButton.addTarget(self, action: "dismissSelf", forControlEvents: UIControlEvents.TouchUpInside)
-        
         self.exitButton.layer.masksToBounds = true
         self.exitButton.layer.cornerRadius = self.exitButton.frame.width/2.0
         self.connectButton?.alpha = 1.0
         self.connectButton?.userInteractionEnabled = true
         
+        
+        //get users comments
         loadUserComments()
+        //shows loading screen, will be taken away later
         showLoadingScreen()
+        //gets users relationship to person in question
         getConnectionStatus()
         
-        
+        //gets the users friends if not already known.
         if(self.userFriends == "none"){
             getMutualFriends()
             self.mutualFriendsLabel.text = " "
@@ -135,7 +141,6 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         else{
             self.mutualFriendsLabel.text = self.userFriends
         }
-       // self.getUserPicture()
         
     }
     
@@ -143,87 +148,61 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        
+        //gets user info from our servers
         self.getUserInfo()
         
         // removeLoadingScreen()
     }
     
     override func viewDidLayoutSubviews() {
-        
-        let color: UIColor = UIColor( red: CGFloat(255.0/255.0), green: CGFloat(217.0/255.0), blue: CGFloat(0.0/255.0), alpha: CGFloat(1.0) )
-        
+
+        //if the background profile image exists
         if(self.backgroundProfileImage.viewWithTag(200) == nil){
             self.getUserPicture()
         }
-       // self.getUserPicture()
         
     }
     
-    
+    //goes to previous view controller
     func dismissSelf(){
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     
+    //basic collection view delegate methods
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    //2
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numOfCells
     }
     
-    //3
-    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        //
+        //Happens if a user clicks a post cell in the collection view
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         let comView = mainStoryboard.instantiateViewControllerWithIdentifier("com_focus_scene_id") as! ThirdViewController
-        //
-        
-        println("DID RECIEVE CLICK")
         let indCell = collectionView.cellForItemAtIndexPath(indexPath) as! profile_post_cellCollectionViewCell
         
         comView.commentID = indCell.comment_id
-        //        let indCell = tableView.cellForRowAtIndexPath(indexPath)
-        //
-        //        if(indCell?.tag == 100){
-        //            let gotCell = tableView.cellForRowAtIndexPath(indexPath) as! custom_cell_no_images
-        //
-        //            comView.sentLocation = currentUserLocation
-        //            comView.commentID = gotCell.comment_id
-        //        }
-        //        if(indCell?.tag == 200){
-        //            let gotCell = tableView.cellForRowAtIndexPath(indexPath) as! custom_cell
-        //
-        //            comView.sentLocation = currentUserLocation
-        //            comView.commentID = gotCell.comment_id
-        //        }
-        //
-        
-        
         self.presentViewController(comView, animated: true, completion: nil)
-        
-        
         
     }
     
+    //populates the collectionview with posts
+    //gets data from the users cells retrieved from database. Stored in theJSON
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("profile_post_cell_id", forIndexPath: indexPath) as! profile_post_cellCollectionViewCell
         
-        
-        
         cell.postTextLabel?.text = theJSON["results"]![indexPath.row]["comments"] as! String!
-        
-        
-        
         cell.dateLabel?.text = theJSON["results"]![indexPath.row]["date"] as! String!
         cell.heartLabel?.text = voterValueCache[indexPath.row] as String!
         cell.timeLabel?.text = theJSON["results"]![indexPath.row]["time"] as! String!
         cell.comment_id = theJSON["results"]![indexPath.row]["c_id"] as! String!
+        
+        
         
         for j in 0...(self.theJSON["results"]![indexPath.row]["hashtags"]!.count - 1){
             let newHashtagText = self.theJSON["results"]![indexPath.row]["hashtags"]![j]["body"] as! String
@@ -241,7 +220,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         var yPos = 0.0
         cell.widthFiller = 0
         for i in 0...(cell.hashtags.count - 1){
-            var title = cell.hashtags[i]
+            let title = cell.hashtags[i]
             //            var titleLooker = title as String
             //            var daID = theJSON["results"]![indexPath.row]["hashtags"]![titleLooker] as! NSString
             //            let daID2 = daID.integerValue
@@ -256,7 +235,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
             }
             
             var xpos = 0.0
-            var widthSpacing = 8.0
+            let widthSpacing = 8.0
             if(cell.hashtagButtons.count > 0){
                 let holder = cell.hashtagButtons.last! as UIButton!
                 xpos = Double(holder.frame.origin.x) + Double(holder.frame.width) + widthSpacing;
@@ -270,7 +249,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
                 yPos += addPos
                 xpos = 0.0
             }
-            var newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: Int(height)))
+            let newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: Int(height)))
             newButton.backgroundColor = UIColor(red: (255.0/255.0), green: (210.0/255.0), blue: (11/255.0), alpha: 1.0)
             newButton.layer.masksToBounds = true
             newButton.layer.cornerRadius = 4.0
@@ -304,13 +283,13 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
             if( upimage == nil ) {
                 //If the image does not exist, we need to download it
                 
-                var imgURL: NSURL = NSURL(string: imageLink)!
+                let imgURL: NSURL = NSURL(string: imageLink)!
                 
                 //Download an NSData representation of the image at the URL
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                     if error == nil {
-                        upimage = UIImage(data: data)
+                        upimage = UIImage(data: data!)
                         
                         //  Store the image in to our cache
                         self.postImageCache[imageLink] = upimage
@@ -321,7 +300,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
                         })
                     }
                     else {
-                        println("Error: \(error.localizedDescription)")
+                        print("Error: \(error!.localizedDescription)")
                     }
                 })
                 
@@ -384,34 +363,46 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_user_get_mutual_friends")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
         let fbid = userFBID//defaults.stringForKey("saved_fb_id") as String!
         let gfbid = defaults.stringForKey("saved_fb_id") as String!
         
-        var params = ["fb_id":fbid, "gfb_id":gfbid] as Dictionary<String, String>
+        let params = ["fb_id":fbid, "gfb_id":gfbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
 
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
             }
             else {
@@ -437,7 +428,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     func getUserPicture(){
         
         //let defaults = NSUserDefaults.standardUserDefaults()
-        var fbid = userFBID//defaults.stringForKey("saved_fb_id") as String!
+        let fbid = userFBID//defaults.stringForKey("saved_fb_id") as String!
         
         let url = NSURL(string: "http://graph.facebook.com/\(fbid)/picture?width=200&height=200")
         // let url = NSURL(string: "http://graph.facebook.com/1382309155407327/picture?width=200&height=200")
@@ -446,9 +437,9 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         if(data != nil){
             profilePic.image = UIImage(data: data!)
             backgroundProfileImage.image = UIImage(data: data!)
-            var effect =  UIBlurEffect(style: UIBlurEffectStyle.Dark)
+            let effect =  UIBlurEffect(style: UIBlurEffectStyle.Dark)
             
-            var effectView  = UIVisualEffectView(effect: effect)
+            let effectView  = UIVisualEffectView(effect: effect)
             
             effectView.frame  = CGRectMake(0, 0, backgroundProfileImage.frame.width, backgroundProfileImage.frame.height)
             effectView.tag = 200
@@ -496,7 +487,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     }
     
     @IBAction func customLogout(){
-        println("DID START LOGOUT")
+        print("DID START LOGOUT")
         //FBSDKAccessToken.currentAccessToken()
         FBSession.activeSession().closeAndClearTokenInformation()
         let loginManager = FBSDKLoginManager()
@@ -511,7 +502,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
-        let mainView = mainStoryboard.instantiateViewControllerWithIdentifier("fb_login_scene_id") as! UIViewController
+        _ = mainStoryboard.instantiateViewControllerWithIdentifier("fb_login_scene_id") 
         
         
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -521,7 +512,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     }
     
     func loginViewShowingLoggedOutUser(loginView : FBLoginView!) {
-        println("User Logged Out")
+        print("User Logged Out")
     }
     
     
@@ -546,7 +537,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     
     func showFollowing(){
         
-        println("SLDKFJLS:DKFJLS:DKFSDF")
+        print("SLDKFJLS:DKFJLS:DKFSDF")
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         let friendView = mainStoryboard.instantiateViewControllerWithIdentifier("user_friends_scene_id") as! UserFriendsViewController
         
@@ -569,28 +560,40 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_user_get_connection_status")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
         let fbid = userFBID//defaults.stringForKey("saved_fb_id") as String!
         let gfbid = defaults.stringForKey("saved_fb_id") as String!
         
-        var params = ["fb_id":fbid, "gfb_id":gfbid] as Dictionary<String, String>
+        let params = ["fb_id":fbid, "gfb_id":gfbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             //self.theJSON = NSJSONSerialization.JSONObjectWithData(json, options:.MutableLeaves, error: &err) as? NSDictionary
@@ -598,9 +601,9 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 
             }
             else {
@@ -620,8 +623,8 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
                     
                     if(status == "requester"){
                         //cell.relationshipLabel?.text = "pending"
-                        var lGif = NSBundle.mainBundle().URLForResource("loading_spinner", withExtension: "gif")
-                        var imageDatagif = NSData(contentsOfURL: lGif!)
+                        let lGif = NSBundle.mainBundle().URLForResource("loading_spinner", withExtension: "gif")
+                        let imageDatagif = NSData(contentsOfURL: lGif!)
                         let image = UIImage.animatedImageWithData(imageDatagif!)
                         //cell.interactionButton?.imageView?.image = UIImage(data: imageDatagif!);
                         self.connectButton?.setImage(image, forState: UIControlState.Normal)
@@ -666,38 +669,49 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_user_get_hashtags")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
         let fbid = userFBID//defaults.stringForKey("saved_fb_id") as String!
         let gfbid = defaults.stringForKey("saved_fb_id") as String!
         
-        var params = ["fb_id":fbid, "gfb_id":gfbid] as Dictionary<String, String>
+        let params = ["fb_id":fbid, "gfb_id":gfbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
-            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             //self.theJSON = NSJSONSerialization.JSONObjectWithData(json, options:.MutableLeaves, error: &err) as? NSDictionary
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
                 self.removeLoadingScreen()
                 
             }
@@ -757,7 +771,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         var hashtagButtons = [UIButton?]()
         var mH = 0.0
         for i in 0...(self.fakeHashtags.count - 1){
-            var title = self.fakeHashtags[i]
+            let title = self.fakeHashtags[i]
             let f = UIFont(name: "Lato-Regular", size: 14.0)
             let width = Int(title.sizeWithAttributes([NSFontAttributeName: f!]).width) + 6
             let height = Int(title.sizeWithAttributes([NSFontAttributeName: UIFont.systemFontOfSize(24.0)]).height)
@@ -765,7 +779,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
                 mH = Double(height)
             }
             var xpos = 5.0
-            var widthSpacing = 6.0
+            let widthSpacing = 6.0
             if(hashtagButtons.count > 0){
                 let holder = hashtagButtons.last! as UIButton!
                 xpos = Double(holder.frame.origin.x) + Double(holder.frame.width) + widthSpacing;
@@ -779,7 +793,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
                 xpos = 5.0
             }
             
-            var newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: height))
+            let newButton = UIButton(frame: CGRect(x: Int(xpos), y: Int(yPos), width: width, height: height))
             newButton.backgroundColor = UIColor.clearColor();//UIColor(red: (255.0/255.0), green: (165.0/255.0), blue: (0.0/255.0), alpha: 1.0)
             
             newButton.setTitle(title as String, forState: UIControlState.Normal)
@@ -810,23 +824,23 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     
     
     func loginView(loginView : FBLoginView!, handleError:NSError) {
-        println("Error: \(handleError.localizedDescription)")
+        print("Error: \(handleError.localizedDescription)")
     }
     
     
     func parseHTMLString(daString:NSString) -> [NSString]{
         
-        let daString2 = daString as! String
+        let daString2 = daString as String
         
-        println("DA STRING:\(daString)")
-        let detector = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: nil)
+        print("DA STRING:\(daString)")
+        let detector = try? NSDataDetector(types: NSTextCheckingType.Link.rawValue)
         
         let fakejf = String(daString)
         //let length = fakejf.utf16Count
-        let length = count(fakejf.utf16)
+        let length = fakejf.utf16.count
         // let links = detector?.matchesInString(daString, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as NSTextCheckingResult}
         
-        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as! NSTextCheckingResult}
+        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 }
         
         //        var d = daString as StringE
         //        if (d.containsString("Http://") == true){
@@ -842,9 +856,9 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
             }.map { link -> NSString in
                 //let urString = String(contentsOfURL: link.URL!)
                 let urString = link.URL!.absoluteString
-                println("DA STRING:\(urString)")
-                retString = urString!
-                return urString!
+                print("DA STRING:\(urString)")
+                retString = urString
+                return urString
         }
         
         // var newString = retString
@@ -862,8 +876,8 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         // showLoadingScreen()
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_user_comments")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -874,26 +888,38 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         
         // var params = ["fbid":savedFBID, "recentLocation":currentUserLocation, "radiusValue":String(radValue)] as Dictionary<String, String>
         
-        var params = ["fbid":fbid, "gfbid":gfbid, "offset":offset, "count":count] as Dictionary<String, String>
+        let params = ["fbid":fbid, "gfbid":gfbid, "offset":offset, "count":count] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -958,7 +984,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     func shareComment(sender: UIGestureRecognizer){
         
         
-        println("DID PRESS SHARE")
+        print("DID PRESS SHARE")
         var sharedButton:AnyObject
         //        if(sender.view? == UIImageView()){
         //
@@ -1039,13 +1065,13 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     }
     
     func showImageFullscreen(sender: UIGestureRecognizer){
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
-        let imView = mainStoryboard.instantiateViewControllerWithIdentifier("Image_focus_controller") as! ImageFocusController
+        _ = mainStoryboard.instantiateViewControllerWithIdentifier("Image_focus_controller") as! ImageFocusController
         
-        var daLink = "none"
+        _ = "none"
         
         var authorLabel:AnyObject
         
@@ -1072,11 +1098,11 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     
     func showLikers(sender: UIGestureRecognizer){
         
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
-        let likeView = mainStoryboard.instantiateViewControllerWithIdentifier("comment_likers_id") as! CommentLikersViewController
+        _ = mainStoryboard.instantiateViewControllerWithIdentifier("comment_likers_id") as! CommentLikersViewController
         
         var authorLabel:AnyObject
         
@@ -1114,11 +1140,11 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     
     func showReplies(sender: UIGestureRecognizer){
         
-        println("SLKFJS:LDKFJ")
+        print("SLKFJS:LDKFJ")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
-        let repView = mainStoryboard.instantiateViewControllerWithIdentifier("comment_reply_id") as! CommentReplyViewController
+        _ = mainStoryboard.instantiateViewControllerWithIdentifier("comment_reply_id") as! CommentReplyViewController
         
         var authorLabel:AnyObject
         
@@ -1182,7 +1208,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         
         
         
-        var label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
+        let label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
         label.textAlignment = NSTextAlignment.Center
         label.text = "Loading Comments..."
         //holdView.addSubview(label)
@@ -1191,14 +1217,14 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         
         
         // Returns an animated UIImage
-        var url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        let url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+        let imageData = NSData(contentsOfURL: url!)
         
         
         let image = UIImage.animatedImageWithData(imageData!)//UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
         
-        let smallerSquareSize = squareSize*0.6
+        _ = squareSize*0.6
         let gPos = (holdView.frame.width*0.2)/2
         let kPos = (holdView.frame.height*0.2)/2
         
@@ -1411,13 +1437,13 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        var currentOffset = scrollView.contentOffset.y;
+        let currentOffset = scrollView.contentOffset.y;
         
-        var test = self.oldScrollPost - currentOffset
+        let test = self.oldScrollPost - currentOffset
         
-        println("SCROLL:\(currentOffset)")
-        println("SIZE:\(scrollView.contentSize.height)")
-        println("FRAME:\(scrollView.frame.height)")
+        print("SCROLL:\(currentOffset)")
+        print("SIZE:\(scrollView.contentSize.height)")
+        print("FRAME:\(scrollView.frame.height)")
         if(test >= 0 ){
             
         }
@@ -1492,30 +1518,42 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_toggle_user_follow")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
-        var params = ["gUser_fbID":fbid, "iUser_fbID":fbid] as Dictionary<String, String>
+        let params = ["gUser_fbID":fbid, "iUser_fbID":fbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 
@@ -1573,23 +1611,35 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         var params = ["gUser_fbID":fbid, "iUser_fbID":fbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 
@@ -1649,17 +1699,29 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
         var params = ["gfbid":fbid, "rfbid": userFBID] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
@@ -1669,9 +1731,9 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
                     self.connectButton?.setImage(image, forState: UIControlState.Normal)
                   //  cell.relationshipLabel?.text = "try again"
                     
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 });
                 //CHANGE THE IMAGE BACK TO CONNECT
                 
@@ -1728,29 +1790,44 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate, UICo
             var session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
+            
             let defaults = NSUserDefaults.standardUserDefaults()
             let fbid = defaults.stringForKey("saved_fb_id") as String!
             
-            var params = ["gfbid":fbid, "rfbid": requestedid] as Dictionary<String, String>
+            let params = ["gfbid":fbid, "rfbid": requestedid] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch var error as NSError {
+                err = error
+                request.HTTPBody = nil
+            } catch {
+                fatalError()
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+                print("Response: \(response)")
+                var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                 
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                     
                     
                 }

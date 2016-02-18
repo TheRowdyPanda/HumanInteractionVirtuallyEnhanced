@@ -5,6 +5,9 @@
 //  Created by Rijul Gupta on 8/22/15.
 //  Copyright (c) 2015 Rijul Gupta. All rights reserved.
 //
+//NEW
+//Shows messages between you and another use. Allows you to continue to the conversation.
+
 import UIKit
 
 
@@ -64,7 +67,7 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     override func viewDidLayoutSubviews() {
-        let color: UIColor = UIColor( red: CGFloat(255.0/255.0), green: CGFloat(217.0/255.0), blue: CGFloat(0.0/255.0), alpha: CGFloat(1.0) )
+        //_: UIColor = UIColor( red: CGFloat(255.0/255.0), green: CGFloat(217.0/255.0), blue: CGFloat(0.0/255.0), alpha: CGFloat(1.0) )
         self.tableView.separatorColor = UIColor.clearColor()
         self.tableView.separatorInset.left = 20
         self.tableView.separatorInset.right = 20
@@ -85,8 +88,8 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
     
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
-        var ff = info[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
-        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let ff = info[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
         UIView.animateWithDuration(ff!, animations: { () -> Void in
             self.bottomTableConstraint.constant = keyboardFrame.size.height + 0
@@ -96,7 +99,7 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
     
     func keyboardWillHide(notification: NSNotification) {
         var info = notification.userInfo!
-        var keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        //_: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.bottomTableConstraint.constant = 0
@@ -106,7 +109,7 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableWasTapped(sender: UIGestureRecognizer){
-        println("CHECK IT OUT1")
+        print("CHECK IT OUT1")
         if(self.inputTextField.isFirstResponder() == true){
             self.inputTextField.resignFirstResponder()
         }
@@ -178,9 +181,9 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
                 
                 // Download an NSData representation of the image at the URL
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                     if error == nil {
-                        upimage = UIImage(data: data)
+                        upimage = UIImage(data: data!)
                         
                         // Store the image in to our cache
                         self.userImageCache[testUserImg] = upimage
@@ -191,7 +194,7 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
                         })
                     }
                     else {
-                        println("Error: \(error.localizedDescription)")
+                        print("Error: \(error!.localizedDescription)")
                     }
                 })
                 
@@ -224,16 +227,16 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
     func parseHTMLString(daString:NSString) -> [NSString]{
         
         
-        println("DA STRING:\(daString)")
-        let detector = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: nil)
+        print("DA STRING:\(daString)")
+        let detector = try? NSDataDetector(types: NSTextCheckingType.Link.rawValue)
         
         let fakejf = String(daString)
         //let length = fakejf.utf16Count
-        let length = count(fakejf.utf16)
-        let daString2 = daString as! String
+        let length = fakejf.utf16.count
+        let daString2 = daString as String
         // let links = detector?.matchesInString(daString, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as NSTextCheckingResult}
         
-        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as! NSTextCheckingResult}
+        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 }
         
         //        var d = daString as StringE
         //        if (d.containsString("Http://") == true){
@@ -249,9 +252,9 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
             }.map { link -> NSString in
                 //let urString = String(contentsOfURL: link.URL!)
                 let urString = link.URL!.absoluteString
-                println("DA STRING:\(urString)")
-                retString = urString!
-                return urString!
+                print("DA STRING:\(urString)")
+                retString = urString
+                return urString
         }
         
         // var newString = retString
@@ -276,23 +279,38 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
         var params = ["gfbid":fbid, "rfbid":userFBID] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        } catch {
+            
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -305,7 +323,7 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
                     self.theJSON = parseJSON as! NSMutableDictionary
                     self.numOfCells = parseJSON["results"]!.count
                     
-                    println("TEH CELL COUNT\(self.numOfCells)")
+                    print("TEH CELL COUNT\(self.numOfCells)")
                     if(self.numOfCells > 0){
                         self.mostRecentMessageId = parseJSON["results"]![self.numOfCells - 1]!["id"] as! String
                         
@@ -349,23 +367,35 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
         var params = ["gfbid":fbid, "rfbid":userFBID, "mostRecentCommentId":mostRecentMessageId] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -468,26 +498,40 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
         let fbid = defaults.stringForKey("saved_fb_id") as String!
         
         
-        var params = ["message":textValue, "gfbid":fbid, "rfbid":userFBID] as Dictionary<String, String>
+        var params = ["message":textValue!, "gfbid":fbid, "rfbid":userFBID] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
+            
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -497,11 +541,11 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
                     
                     dispatch_async(dispatch_get_main_queue(),{
                         let theID = parseJSON["results"] as! String
-                        println("THE ID:\(theID)")
+                        print("THE ID:\(theID)")
                         
                    
                        // self.insertCommentInTable(self.inputTextField.text)
-                        self.insertCommentInTable(self.inputTextField.text, id: theID)
+                        self.insertCommentInTable(self.inputTextField.text!, id: theID)
                     self.inputTextField.text = ""
                     self.inputTextField.resignFirstResponder()
                         self.inputTextField.textColor = UIColor.blackColor()
@@ -519,12 +563,12 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
     
     func insertOtherUserCommentInTable(text:String, id:String){
         
-        var oldDict = NSMutableArray(array: self.theJSON["results"] as! [AnyObject])
+        let oldDict = NSMutableArray(array: self.theJSON["results"] as! [AnyObject])
         
-        var newComment = ["message":text, "id":id, "type":"2"] as Dictionary<String, String>
+        let newComment = ["message":text, "id":id, "type":"2"] as Dictionary<String, String>
         
         oldDict.addObject(newComment)
-        var newDict = ["results": oldDict]
+        let newDict = ["results": oldDict]
         
         self.theJSON = NSMutableDictionary(dictionary: newDict)
         self.numOfCells = self.numOfCells + 1
@@ -534,17 +578,17 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
         
         self.mostRecentMessageId = id
 
-        var oldDict = NSMutableArray(array: self.theJSON["results"] as! [AnyObject])
+        let oldDict = NSMutableArray(array: self.theJSON["results"] as! [AnyObject])
 
-        var newComment = ["message":text, "id":id, "type":"1"] as Dictionary<String, String>
+        let newComment = ["message":text, "id":id, "type":"1"] as Dictionary<String, String>
 
         oldDict.addObject(newComment)
-        var newDict = ["results": oldDict]
+        let newDict = ["results": oldDict]
 
         self.theJSON = NSMutableDictionary(dictionary: newDict)
         self.numOfCells = self.numOfCells + 1
         self.reload_table()
-        println(theJSON)
+        print(theJSON)
      
     }
     
@@ -598,23 +642,37 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
         var params = ["gfbid":fbid, "rfbid":userFBID] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch var error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+            print("Response: \(response)")
+            var strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
+            
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
+            
             
             
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -672,7 +730,7 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
         
         
         
-        var label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
+        let label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
         label.textAlignment = NSTextAlignment.Center
         label.text = "Loading Comments..."
         //holdView.addSubview(label)
@@ -681,14 +739,14 @@ class DirectMessagingViewController: UIViewController, UITableViewDelegate, UITa
         
         
         // Returns an animated UIImage
-        var url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        let url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+        let imageData = NSData(contentsOfURL: url!)
         
         
         let image = UIImage.animatedImageWithData(imageData!)//UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
         
-        let smallerSquareSize = squareSize*0.6
+        _ = squareSize*0.6
         let gPos = (holdView.frame.width*0.2)/2
         let kPos = (holdView.frame.height*0.2)/2
         

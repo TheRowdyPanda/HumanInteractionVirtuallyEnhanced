@@ -73,7 +73,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         let testImage = theJSON["results"]![indexPath.row]["image"] as! String!
         
         if(testImage == "none"){
-            var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
+            let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell_no_images") as! custom_cell_no_images
 //            
 //            
 //            cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -290,7 +290,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         else{
             //image
-            var cell = tableView.dequeueReusableCellWithIdentifier("custom_cell") as! custom_cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("custom_cell") as! custom_cell
             
             
             cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -322,17 +322,17 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             
             let asdfasd = cell.comment_label?.text!
             
-            var gotURL = self.parseHTMLString(asdfasd!)
+            let gotURL = self.parseHTMLString(asdfasd!)
             
-            println("OH YEAH:\(gotURL)")
+            print("OH YEAH:\(gotURL)")
             
             if(gotURL.count == 0){
-                println("NO SHOW")
+                print("NO SHOW")
                 cell.urlLink = "none"
             }
             else{
-                println("LAST TIME BuDDY:\(gotURL.last)")
-                cell.urlLink = gotURL.last! as! String
+                print("LAST TIME BuDDY:\(gotURL.last)")
+                cell.urlLink = gotURL.last! as String
             }
             
             
@@ -353,13 +353,13 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             if( upimage == nil ) {
                 // If the image does not exist, we need to download it
                 
-                var imgURL: NSURL = NSURL(string: testUserImg)!
+                let imgURL: NSURL = NSURL(string: testUserImg)!
                 
                 // Download an NSData representation of the image at the URL
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                     if error == nil {
-                        upimage = UIImage(data: data)
+                        upimage = UIImage(data: data!)
                         
                         // Store the image in to our cache
                         self.userImageCache[testUserImg] = upimage
@@ -370,7 +370,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                         })
                     }
                     else {
-                        println("Error: \(error.localizedDescription)")
+                        print("Error: \(error!.localizedDescription)")
                     }
                 })
                 
@@ -462,7 +462,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             //
             
             //find out if the user has liked the comment or not
-            var hasLiked = voterCache[indexPath.row] as String!
+            let hasLiked = voterCache[indexPath.row] as String!
             
             if(hasLiked == "yes"){
                 cell.heart_icon?.userInteractionEnabled = true
@@ -502,8 +502,8 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             cell.comImage?.addGestureRecognizer(focusImage)
             
             //give a loading gif to UI
-            var urlgif = NSBundle.mainBundle().URLForResource("loader2", withExtension: "gif")
-            var imageDatagif = NSData(contentsOfURL: urlgif!)
+            let urlgif = NSBundle.mainBundle().URLForResource("loader2", withExtension: "gif")
+            let imageDatagif = NSData(contentsOfURL: urlgif!)
             
             
             let imagegif = UIImage.animatedImageWithData(imageDatagif!)
@@ -516,13 +516,13 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             var image = self.imageCache[testImage]
             if( image == nil ) {
                 // If the image does not exist, we need to download it
-                var imgURL: NSURL = NSURL(string: testImage)!
+                let imgURL: NSURL = NSURL(string: testImage)!
                 
                 // Download an NSData representation of the image at the URL
                 let request: NSURLRequest = NSURLRequest(URL: imgURL)
-                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!,data: NSData!,error: NSError!) -> Void in
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse?,data: NSData?,error: NSError?) -> Void in
                     if error == nil {
-                        image = UIImage(data: data)
+                        image = UIImage(data: data!)
                         
                         // Store the image in to our cache
                         self.imageCache[testImage] = image
@@ -533,7 +533,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                         })
                     }
                     else {
-                        println("Error: \(error.localizedDescription)")
+                        print("Error: \(error!.localizedDescription)")
                     }
                 })
                 
@@ -595,16 +595,16 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     func parseHTMLString(daString:NSString) -> [NSString]{
         
         
-        println("DA STRING:\(daString)")
-        let detector = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: nil)
+        print("DA STRING:\(daString)")
+        let detector = try? NSDataDetector(types: NSTextCheckingType.Link.rawValue)
         
         let fakejf = String(daString)
         //let length = fakejf.utf16Count
-        let length = count(fakejf.utf16)
-        let daString2 = daString as! String
+        let length = fakejf.utf16.count
+        let daString2 = daString as String
         // let links = detector?.matchesInString(daString, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as NSTextCheckingResult}
         
-        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 as! NSTextCheckingResult}
+        let links = detector?.matchesInString(daString2, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, length)).map {$0 }
         
         //        var d = daString as StringE
         //        if (d.containsString("Http://") == true){
@@ -620,9 +620,9 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             }.map { link -> NSString in
                 //let urString = String(contentsOfURL: link.URL!)
                 let urString = link.URL!.absoluteString
-                println("DA STRING:\(urString)")
-                retString = urString!
-                return urString!
+                print("DA STRING:\(urString)")
+                retString = urString
+                return urString
         }
         
         // var newString = retString
@@ -641,34 +641,46 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
          showLoadingScreen()
         let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_get_following_comments")
         //START AJAX
-        var request = NSMutableURLRequest(URL: url!)
-        var session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url!)
+        let session = NSURLSession.sharedSession()
         request.HTTPMethod = "POST"
         
         let defaults = NSUserDefaults.standardUserDefaults()
         let fbid = defaults.stringForKey("saved_fb_id") as String!
     
-        var params = ["gfbid":fbid] as Dictionary<String, String>
+        let params = ["gfbid":fbid] as Dictionary<String, String>
         
         var err: NSError?
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+        } catch let error as NSError {
+            err = error
+            request.HTTPBody = nil
+        }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            println("Response: \(response)")
-            var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println("Body: \(strData)")
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            print("Response: \(response)")
+            let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("Body: \(strData)")
             var err: NSError?
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
             
+            var json: NSDictionary?
+            do{
+                json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+            } catch let error as NSError{
+                err = error
+            } catch {
+                
+            }
             
             self.removeLoadingScreen()
             // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
             if(err != nil) {
-                println(err!.localizedDescription)
-                let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Error could not parse JSON: '\(jsonStr)'")
+                print(err!.localizedDescription)
+                let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Error could not parse JSON: '\(jsonStr)'")
             }
             else {
                 // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -769,7 +781,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func showImageFullscreen(sender: UIGestureRecognizer){
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -785,7 +797,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         let indCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: authorLabel.tag, inSection: 0))
         
         if(indCell?.tag == 100){
-            let gotCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: authorLabel.tag, inSection: 0)) as! custom_cell_no_images
+            _ = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: authorLabel.tag, inSection: 0)) as! custom_cell_no_images
             
         }
         if(indCell?.tag == 200){
@@ -804,7 +816,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func showLikers(sender: UIGestureRecognizer){
         
-        println("Presenting Likers, ya heard.")
+        print("Presenting Likers, ya heard.")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -848,7 +860,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func showReplies(sender: UIGestureRecognizer){
         
-        println("SLKFJS:LDKFJ")
+        print("SLKFJS:LDKFJ")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("test_view_switcher") as UIViewController
@@ -894,7 +906,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     func shareComment(sender: UIGestureRecognizer){
         
         
-        println("DID PRESS SHARE")
+        print("DID PRESS SHARE")
         var sharedButton:AnyObject
         //        if(sender.view? == UIImageView()){
         //
@@ -948,7 +960,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             let shareAuth = gotCell.author_label.text as String!
             
             let giveMess = "'\(shareCom)'  @\(shareAuth) \n\n @SoLoCoHive (http://apple.co/1yTV9Fj)"
-            let hiveSite = NSURL(string: "http://apple.co/1yTV9Fj")
+            _ = NSURL(string: "http://apple.co/1yTV9Fj")
             
             let shareImage = gotCell.comImage?.image as UIImage!
             
@@ -987,13 +999,13 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         //var heartImage = sender.view? as UIImageView
         //get the main view
         
-        var indCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0))
+        let indCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0))
         
         if(indCell?.tag == 100){
             
-            var cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell_no_images
+            let cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell_no_images
             
-            var cID = cellView.comment_id
+            let cID = cellView.comment_id
             
             
             
@@ -1001,30 +1013,42 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             
             let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_toggle_comment_vote")
             //START AJAX
-            var request = NSMutableURLRequest(URL: url!)
-            var session = NSURLSession.sharedSession()
+            let request = NSMutableURLRequest(URL: url!)
+            let session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
-            var params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
+            let params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch let error as NSError {
+                err = error
+                request.HTTPBody = nil
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
-            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                 
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1038,13 +1062,13 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                             
                             
                             
-                            var testVote = parseJSON["results"]![0]["vote"] as! String!
+                            let testVote = parseJSON["results"]![0]["vote"] as! String!
                             
                             if(testVote == "no"){
                                 cellView.heart_icon?.image = UIImage(named: "button_heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -1055,7 +1079,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                                 cellView.heart_icon.image = UIImage(named: "button_heart.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -1079,9 +1103,9 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         
         if(indCell?.tag == 200){
             
-            var cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell
+            let cellView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: heartImage.tag, inSection: 0)) as! custom_cell
             
-            var cID = cellView.comment_id
+            let cID = cellView.comment_id
             
             
             
@@ -1089,30 +1113,42 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
             
             let url = NSURL(string: "http://groopie.pythonanywhere.com/mobile_toggle_comment_vote")
             //START AJAX
-            var request = NSMutableURLRequest(URL: url!)
-            var session = NSURLSession.sharedSession()
+            let request = NSMutableURLRequest(URL: url!)
+            let session = NSURLSession.sharedSession()
             request.HTTPMethod = "POST"
             
-            var params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
+            let params = ["fbid":savedFBID, "comment_id":String(cID)] as Dictionary<String, String>
             
             var err: NSError?
-            request.HTTPBody = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)
+            do {
+                request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+            } catch let error as NSError {
+                err = error
+                request.HTTPBody = nil
+            }
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
-            var task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                println("Response: \(response)")
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData)")
+            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                let strData = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("Body: \(strData)")
                 var err: NSError?
-                var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableLeaves, error: &err) as? NSDictionary
                 
+                var json: NSDictionary?
+                do{
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+                } catch let error as NSError{
+                    err = error
+                } catch {
+                    
+                }
                 
                 // Did the JSONObjectWithData constructor return an error? If so, log the error to the console
                 if(err != nil) {
-                    println(err!.localizedDescription)
-                    let jsonStr = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    println("Error could not parse JSON: '\(jsonStr)'")
+                    print(err!.localizedDescription)
+                    let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("Error could not parse JSON: '\(jsonStr)'")
                 }
                 else {
                     // The JSONObjectWithData constructor didn't return an error. But, we should still
@@ -1126,13 +1162,13 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                             
                             
                             
-                            var testVote = parseJSON["results"]![0]["vote"] as! String!
+                            let testVote = parseJSON["results"]![0]["vote"] as! String!
                             
                             if(testVote == "no"){
                                 cellView.heart_icon?.image = UIImage(named: "button_heart_empty.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! - 1)
                                 cellView.heart_label?.text = String(curHVal! - 1)
@@ -1143,7 +1179,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                                 cellView.heart_icon?.image = UIImage(named: "button_heart.png")
                                 
                                 //get heart label content as int
-                                var curHVal = cellView.heart_label?.text?.toInt()
+                                let curHVal = Int((cellView.heart_label?.text)!)
                                 //get the heart label
                                 self.voterValueCache[heartImage.tag] = String(curHVal! + 1)
                                 cellView.heart_label?.text = String(curHVal! + 1)
@@ -1197,7 +1233,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         
-        var label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
+        let label = UILabel(frame: CGRectMake(0, 0, holdView.frame.width, holdView.frame.height*0.2))
         label.textAlignment = NSTextAlignment.Center
         label.text = "Loading Comments..."
         //holdView.addSubview(label)
@@ -1206,14 +1242,14 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         // Returns an animated UIImage
-        var url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
-        var imageData = NSData(contentsOfURL: url!)
+        let url = NSBundle.mainBundle().URLForResource("loader", withExtension: "gif")
+        let imageData = NSData(contentsOfURL: url!)
         
         
         let image = UIImage.animatedImageWithData(imageData!)//UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
         
-        let smallerSquareSize = squareSize*0.6
+        _ = squareSize*0.6
         let gPos = (holdView.frame.width*0.2)/2
         let kPos = (holdView.frame.height*0.2)/2
         
