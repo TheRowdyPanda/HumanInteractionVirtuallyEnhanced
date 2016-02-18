@@ -5,7 +5,7 @@
 //  Created by Rijul Gupta on 3/7/15.
 //  Copyright (c) 2015 Rijul Gupta. All rights reserved.
 //NEW
-//Shows another users profile.
+//Shows another users profile. . 
 
 
 import UIKit
